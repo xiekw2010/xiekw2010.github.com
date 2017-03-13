@@ -1,0 +1,755 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="最近想把 http://bonwechat.com 后端的数据服务改造成 Parse Server 的。
+什么是 Parse Server?可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！
+为什么是 Parse Server?
+成熟的客户端数据 SDK 接口 — iOS，android，php，j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learn Parse Server">
+<meta property="og:url" content="http://xiekw2010.github.io/2016/11/15/Learn-Parse-Server/index.html">
+<meta property="og:site_name" content="xiekw2010">
+<meta property="og:description" content="最近想把 http://bonwechat.com 后端的数据服务改造成 Parse Server 的。
+什么是 Parse Server?可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！
+为什么是 Parse Server?
+成熟的客户端数据 SDK 接口 — iOS，android，php，j">
+<meta property="og:updated_time" content="2016-11-17T06:39:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Learn Parse Server">
+<meta name="twitter:description" content="最近想把 http://bonwechat.com 后端的数据服务改造成 Parse Server 的。
+什么是 Parse Server?可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！
+为什么是 Parse Server?
+成熟的客户端数据 SDK 接口 — iOS，android，php，j">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Learn Parse Server | xiekw2010 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xiekw2010</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好记性不如烂 blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Learn Parse Server
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-15T17:47:17+08:00" content="2016-11-15">
+              2016-11-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/15/Learn-Parse-Server/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/15/Learn-Parse-Server/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近想把 <a href="http://bonwechat.com" target="_blank" rel="external">http://bonwechat.com</a> 后端的数据服务改造成 Parse Server 的。</p>
+<h2 id="什么是-Parse-Server"><a href="#什么是-Parse-Server" class="headerlink" title="什么是 Parse Server?"></a>什么是 Parse Server?</h2><p>可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！</p>
+<h2 id="为什么是-Parse-Server"><a href="#为什么是-Parse-Server" class="headerlink" title="为什么是 Parse Server?"></a>为什么是 Parse Server?</h2><ol>
+<li>成熟的客户端数据 SDK 接口 — iOS，android，php，js，windows等等的（虽然现在只用到 js，- -!）。</li>
+<li>有个美观强大 dashboard 界面。</li>
+<li>一整套的解决服务端恼人的 social，ACL，用户，权限等的数据关系。</li>
+<li>易于在 js 系统中部署。</li>
+<li>移动设备 notification push 机制。</li>
+<li>cloud code 可以进行定制定时服务在云端跑。</li>
+<li>可伸缩扩展的服务端和数据库架构。</li>
+<li>日志系统，虽然这是 web 框架的标配。</li>
+</ol>
+<p>感觉有点像哥伦布发现新大陆了，好兴奋哦！</p>
+<h2 id="我是怎么迁移原来的-egg-服务的？"><a href="#我是怎么迁移原来的-egg-服务的？" class="headerlink" title="我是怎么迁移原来的 egg 服务的？"></a>我是怎么迁移原来的 <a href="https://eggjs.org/" target="_blank" rel="external">egg</a> 服务的？</h2><p>有两个目的：</p>
+<ol>
+<li>保持原来的网站和接口服务</li>
+<li>把原来的数据服务用 parse server 来存储</li>
+</ol>
+<p>第一个目的：</p>
+<p>  要做到其实很简单，保持原来的 mongo 和 egg 服务</p>
+<p>第二个目的：</p>
+<p>  有三件事情：</p>
+<ol>
+<li>把 parse server 和 parse dashboard 要结合起来，并有一个专门服务于这个 parse 后台的 mongo</li>
+<li>把原来的 egg mongo 的数据导入到新的 mongo parse 后台里去。</li>
+<li><p>egg 的存数据库服务现在改成 egg 做为 parse 客户端调用 parse 后台的服务来存数据了。</p>
+<p>目标1：</p>
+<p>另起一个 express app，把 parse server 和 parse dashboard 作为 middleware 加进去。f8app 就是这样做的。后续还可以加入 graphql</p>
+<p>目的2：</p>
+<p>写一个导入的脚本就行了，用 monk 从原来的数据库取数据，再存入到新的 parse 后台去</p>
+<p>目的3：</p>
+<p>把 egg 里原来用 monk 存的代码改成 parse 存就行了。</p>
+<p>so easy！  </p>
+</li>
+</ol>
+<h2 id="一些-parse-SDK-的小技巧"><a href="#一些-parse-SDK-的小技巧" class="headerlink" title="一些 parse SDK 的小技巧"></a>一些 parse SDK 的小技巧</h2><ol>
+<li>原来为 egg 专门做了数据的分页加载功能，现在用 parse SDK 可以轻松实现</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> getTitle = <span class="function"><span class="params">r</span> =&gt;</span> r.get(<span class="string">'desc'</span>)</div><div class="line"><span class="keyword">const</span> step = <span class="number">100</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> Look = Parse.Object.extend(<span class="string">'Look'</span>)</div><div class="line"><span class="keyword">const</span> query = <span class="keyword">new</span> Parse.Query(Look)</div><div class="line">query.descending(<span class="string">"crawledAt"</span>)</div><div class="line">query.limit(step)</div><div class="line"></div><div class="line"><span class="keyword">let</span> skip = <span class="number">0</span></div><div class="line"><span class="keyword">let</span> sentil = [<span class="number">1</span>]</div><div class="line"><span class="keyword">let</span> res = []</div><div class="line"><span class="keyword">while</span> (sentil.length &gt; <span class="number">0</span>) &#123;</div><div class="line">  query.skip(skip)</div><div class="line">  sentil = (<span class="keyword">yield</span> query.find()).map(getTitle)</div><div class="line">  res = res.concat(sentil)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'skip is'</span>, skip)</div><div class="line">  skip += step</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'res is'</span>, res.filter(<span class="function"><span class="params">r</span> =&gt;</span> !!r.length).length)</div><div class="line"></div><div class="line"><span class="keyword">return</span> res</div><div class="line"><span class="string">``</span><span class="string">`  </span></div><div class="line"></div><div class="line">2. 字符串匹配查询，这里因为要模糊匹配，还是用正则最稳，虽然有点牺牲效率，没有用到数据库 index 的功能</div><div class="line"></div><div class="line">`<span class="string">``</span>js</div><div class="line"><span class="keyword">const</span> target = <span class="string">'parse server 强无敌'</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> Look = Parse.Object.extend(<span class="string">'Look'</span>)</div><div class="line"><span class="keyword">const</span> tquery = <span class="keyword">new</span> Parse.Query(Look)</div><div class="line">tquery.descending(<span class="string">"crawledAt"</span>)</div><div class="line">tquery.matches(<span class="string">'title'</span>, <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`.*<span class="subst">$&#123;target&#125;</span>.*`</span>))</div><div class="line"></div><div class="line"><span class="keyword">const</span> dquery = <span class="keyword">new</span> Parse.Query(Look)</div><div class="line">dquery.descending(<span class="string">"crawledAt"</span>)</div><div class="line">dquery.matches(<span class="string">'desc'</span>, <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`.*<span class="subst">$&#123;target&#125;</span>.*`</span>))</div><div class="line"></div><div class="line"><span class="keyword">const</span> res =  <span class="keyword">yield</span> Parse.Query.or(tquery, dquery).find()</div><div class="line"><span class="keyword">return</span> res.map(<span class="function"><span class="params">r</span> =&gt;</span> [r.get(<span class="string">'title'</span>), r.get(<span class="string">'desc'</span>)])</div></pre></td></tr></table></figure>
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>有了 parse server 后，省去了好多后台数据的开发工作，并且同时有了各种平台的数据服务 SDK 了，它的标准已经实现了覆盖 90% 的数据服务。剩下的 10% 也完全可以由灵活的 cloud code cover 到。</p>
+<p>稍微有些蛋疼的就是，每次新建个 app 要重新发布一下，必须得在后台手动加入，parse 并没有开源增加 app 的总 dashboard。</p>
+<p>不过现在的 dashboard 也够用了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/02/可以做-js-面试实战题吗/" rel="next" title="可以做 js 面试实战题吗">
+                <i class="fa fa-chevron-left"></i> 可以做 js 面试实战题吗
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/15/Learn-Parse-Server/"
+           data-title="Learn Parse Server" data-url="http://xiekw2010.github.io/2016/11/15/Learn-Parse-Server/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/948e7df18383d2570eccec7d4f7cc1aa"
+               alt="xiekw2010" />
+          <p class="site-author-name" itemprop="name">xiekw2010</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiekw2010" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-Parse-Server"><span class="nav-number">1.</span> <span class="nav-text">什么是 Parse Server?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么是-Parse-Server"><span class="nav-number">2.</span> <span class="nav-text">为什么是 Parse Server?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我是怎么迁移原来的-egg-服务的？"><span class="nav-number">3.</span> <span class="nav-text">我是怎么迁移原来的 egg 服务的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些-parse-SDK-的小技巧"><span class="nav-number">4.</span> <span class="nav-text">一些 parse SDK 的小技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结一下"><span class="nav-number">5.</span> <span class="nav-text">总结一下</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiekw2010</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiekw2010"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

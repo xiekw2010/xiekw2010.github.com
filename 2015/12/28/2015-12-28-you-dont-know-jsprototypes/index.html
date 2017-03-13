@@ -1,0 +1,804 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="blog" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="You don't know js(prototypes)">
+<meta property="og:url" content="http://xiekw2010.github.io/2015/12/28/2015-12-28-you-dont-know-jsprototypes/index.html">
+<meta property="og:site_name" content="xiekw2010">
+<meta property="og:description" content="blog">
+<meta property="og:image" content="http://img2.tbcdn.cn/L1/461/1/6763693783caf43da914d21c3de411357f85218f.png">
+<meta property="og:updated_time" content="2016-10-28T02:01:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="You don't know js(prototypes)">
+<meta name="twitter:description" content="blog">
+<meta name="twitter:image" content="http://img2.tbcdn.cn/L1/461/1/6763693783caf43da914d21c3de411357f85218f.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> You don't know js(prototypes) | xiekw2010 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xiekw2010</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好记性不如烂 blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                You don't know js(prototypes)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-12-28T17:53:30+08:00" content="2015-12-28">
+              2015-12-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Archive/" itemprop="url" rel="index">
+                    <span itemprop="name">Archive</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/28/2015-12-28-you-dont-know-jsprototypes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/2015-12-28-you-dont-know-jsprototypes/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><code>__proto__</code> vs <code>prototype</code></p>
+<p>先从一个实验开始了解一下这两个名词。（<strong><em>注意</em></strong>: <code>__proto__</code>在有些场合下可能被写为<code>[[prototype]]</code>, 这里以chrome console里的写法为准）</p>
+<p>把这段代码复制到chrome console中(下面简称console)：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 代码一 */</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> a = &#123;&#125;;</div><div class="line">a.prototype; <span class="comment">// undefined;</span></div><div class="line">a.__proto__; <span class="comment">// Object &#123;&#125;;</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line">Foo.prototype; <span class="comment">// Foo&#123;&#125;;</span></div><div class="line">Foo.__proto__; <span class="comment">// Function()&#123;&#125;;</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> Foo();</div><div class="line">b.prototype; <span class="comment">// undefined;</span></div><div class="line">b.__proto__; <span class="comment">// Foo&#123;&#125;;</span></div></pre></td></tr></table></figure>
+<p>可以看到普通对象没有<code>prototype</code>属性，而function对象有。并且通过new操作符 + function对象调用得到对象的<code>__proto__</code>指向function对象的<code>prototype</code>。这里都是<code>Foo{}</code>。</p>
+<p>继续：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 代码二 */</span></div><div class="line"></div><div class="line">b.name; <span class="comment">// undefined;</span></div><div class="line">Foo.prototype.name = <span class="string">'name'</span>;</div><div class="line">b.name; <span class="comment">// 'name';</span></div></pre></td></tr></table></figure>
+<p>在js里，每个对象都有一个<code>__proto__</code>属性，指向另外一个对象的<code>prototype</code>，所有对象的root 对象是<code>Object{}</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 代码三 */</span></div><div class="line"></div><div class="line">a.__proto__; <span class="comment">// Object &#123;&#125;;</span></div><div class="line"><span class="built_in">Object</span>.prototype; <span class="comment">// Object &#123;&#125;;</span></div><div class="line">Foo.prototype.__proto__ ; <span class="comment">// Object &#123;&#125;;</span></div></pre></td></tr></table></figure>
+<p>一个对象在<code>[[getter]]</code>某个属性值的时候会现在自身对象上找，如果找不到，会通过它的隐藏属性<code>__proto__</code>上去找，如果再找不到，继续去它的<code>__proto__.__proto__</code>上去找，直到找到<code>root.prototype</code> 对象。在<strong>代码一</strong>中可以继续做测试：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 代码四 */</span></div><div class="line"></div><div class="line"><span class="built_in">Object</span>.prototype.FindMe = <span class="string">'FindMe'</span>;</div><div class="line">a.FindMe;  <span class="comment">//'FindMe'</span></div><div class="line">Foo.FindMe; <span class="comment">//'FindMe'</span></div><div class="line">b.FindMe; <span class="comment">//'FindMe'</span></div></pre></td></tr></table></figure>
+<p>##constructor</p>
+<p>先来搞清楚一个事实，<strong>代码一</strong>中的a对象，默认有一个<code>a.constructor</code>属性，这个属性指向的是<code>a.__proto__.constructor</code>也就是<code>Foo.prototype.constructor</code>对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 代码五 */</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Bar</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line">Bar.prototype.constructor = <span class="string">'somebar'</span>;</div><div class="line"><span class="keyword">var</span> abar = <span class="keyword">new</span> Bar();</div><div class="line">abar.constructor; <span class="comment">// 'somebar'</span></div></pre></td></tr></table></figure>
+<p>那么<code>prototype.constructor</code>的<code>constructor</code>对象什么时候用到呢？–在与new 操作符打交道的时候用到，new 操作符可以这么理解：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* new 构造器 */</span></div><div class="line"></div><div class="line"><span class="built_in">Function</span>.prototype.method = <span class="function"><span class="keyword">function</span> (<span class="params">name, func</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.prototype[name]) &#123;</div><div class="line">    <span class="keyword">this</span>.prototype[name] = func;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 如果new运算符是一个方法而不是运算符</span></div><div class="line"><span class="comment">// 这里的this可以理解为prototype.constructor</span></div><div class="line"><span class="built_in">Function</span>.method(<span class="string">'new'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="comment">// 创建一个新对象， 它链接于构造器函数的prototype</span></div><div class="line">  <span class="keyword">var</span> that = <span class="built_in">Object</span>.create(<span class="keyword">this</span>.prototype);</div><div class="line"></div><div class="line"><span class="comment">// 调用构造器函数，绑定 this 到新对象</span></div><div class="line">  <span class="keyword">var</span> other = <span class="keyword">this</span>.apply(that, <span class="built_in">arguments</span>);</div><div class="line"></div><div class="line"><span class="comment">// 如果它的返回值不是一个对象，就返回该新对象</span></div><div class="line">  <span class="keyword">return</span> (<span class="keyword">typeof</span> other === <span class="string">'object'</span> &amp;&amp; other) || that;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>##shadowing</p>
+<p><strong>代码五</strong>里<code>abar.constructor</code>指向<code>Foo.prototype.constructor</code>。这里做<code>[[getter]]</code>操作读取属性没有问题。如果做<code>[[setter]]</code>操作会发生什么呢？(这里撇开<code>constructor</code>本身的意义，只是介绍setter on <code>__proto__</code>);</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 代码六 */</span></div><div class="line"></div><div class="line">abar.constructor; <span class="comment">// 'somebar'</span></div><div class="line">abar.constructor = <span class="string">'aBar'</span>;</div><div class="line">abar.constructor; <span class="comment">// 'aBar';</span></div><div class="line">Bar.prototype.constructor; <span class="comment">// 'someBar';</span></div><div class="line">abar.__proto__.constructor; <span class="comment">// 'someBar';</span></div></pre></td></tr></table></figure>
+<p>如果一个对象的属性，这里是<code>constructor</code>同时存在于它自身或者它的<code>__proto__</code> chain上，那么就称这个情况为shadowing。下面讨论<code>myObject.foo = &quot;bar&quot;</code>三种情况下的表现，当foo不在myObject上，但在myObject的<code>__proto__</code>上。</p>
+<p>工具方法<code>Object.getOwnPropertyDescriptor(Bar, &#39;constructor&#39;)</code>, 得到对象上某个属性的描述。</p>
+<ol>
+<li>如果<code>foo</code>在<code>__proto__</code> chain上找到，并且<strong><em>它不是read-only(`writeable: false)</em></strong>属性，那么就产生正常的shadowing属性情况。</li>
+<li>如果<code>foo</code>在<code>__proto__</code> chain上找到，但是<strong><em>它是read-only(`writeable: true)</em></strong>属性，那么在foo上set这个属性或者新建这个属性是不允许的。</li>
+<li>如果<code>foo</code>在<code>__proto__</code> chain上找到，并且在定义这个属性的时候设置了它的<code>[[setter]]</code>，那么<code>foo</code>不会被加到<code>myObjet</code>上，<code>foo</code>的setter也不会被重新定义。</li>
+</ol>
+<p>在#2和#3这种情况下，如果要重新定义<code>foo</code>属性，那就需要使用<code>Object.defineProperty(..)</code>方法了。</p>
+<p>##class</p>
+<p>######实例化 &amp; 类继承？</p>
+<p>传统面向对象语言(以下简称OO)有class的概念。class有两个重要特性–实例化和类继承。</p>
+<p>实例化：根据class的模型copy出一个具有该模型特征的新对象。</p>
+<p>类继承：子类可以继承或者父类的属性，方法。</p>
+<p>那么js是怎么做到这两项的呢？</p>
+<p>之前提到了<code>new Foo()</code>这种像极了传统OO方式的新建对象操作。那么<code>var a = new Foo();</code>到底做了哪些具体的事情呢？</p>
+<ol>
+<li>一个全新的对象被创建了。</li>
+<li>这个新对象的<code>__proto__</code>被link了。link到<code>Foo.prototype</code>上。</li>
+<li>新对象的被当做this出现在Foo()调用的上下文中。</li>
+<li>除非Foo()返回一个其他的对象，不然就自动返回这个新建的对象。</li>
+</ol>
+<p>这里主要看第二步，新对象的<code>__proto__</code>被link了，这意味着这个新对象以后所有的属性查找，找不到就自动会delegate到<code>Foo.prototype</code>上去。只要对<code>Foo.prototype</code>做添加属性，也就对新对象做了添加属性。copy操作就这么被实现了，很像传统OO的实例化操作了。只不过是从对象link到对象，没有class的参与。</p>
+<p>上面看到的操作是function 与 object之间的通过new link。那么普通的object 与 object之间如何link呢？还记得代码<strong><em>new 构造器</em></strong>里提到的<code>Object.create(...)</code>吗？<code>Object.create(...)</code>会新建一个对象，并把这个对象的<code>__proto__</code>link到参数里对象的<code>__proto__</code>上。</p>
+<p>那么怎么做到js的‘class’继承呢(如下图)？</p>
+<p><img src="http://img2.tbcdn.cn/L1/461/1/6763693783caf43da914d21c3de411357f85218f.png" alt="fig3"></p>
+<p>很简单一句代码<code>Bar.prototype = Object.create(Foo.prototype)</code>;</p>
+<p>把两个原型链link，那么b1 b2会自动有a1 a2的属性和方法。具体实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">T1</span>(<span class="params"></span>) </span>&#123;&#125;;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">T2</span>(<span class="params"></span>) </span>&#123;&#125;;</div><div class="line"></div><div class="line">T1.prototype.laoluo = <span class="string">'laoluo'</span>;</div><div class="line">T2.prototype = <span class="built_in">Object</span>.create(T1.prototype);</div><div class="line"></div><div class="line"><span class="keyword">var</span> t1 = <span class="keyword">new</span> T1();</div><div class="line">t1.laoluo; <span class="comment">//'laoluo';</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> t2 = <span class="keyword">new</span> T2();</div><div class="line">t2.laoluo; <span class="comment">//'laoluo';</span></div></pre></td></tr></table></figure>
+<p>关于<code>Object.create(...)</code>通常两种误解，认为下面两种实现效果是一样的：</p>
+<pre><code>1. T2.prototype = T1.prototype;
+2. T2.prototype = new T1();
+</code></pre><p>第一种直接直接把<code>T2.prototype</code>指向了<code>T1.prototype</code>。对<code>T2.prototype.change</code>操作也就是对<code>T1.prototype.change</code>做操作。这两个是一个对象了，并不是想要的<strong><em>新建</em></strong>一个对象然后把两个对象link到一起。</p>
+<p>第二种，可以说和<code>Object.create(...)</code>效果是一样的。但问题在于<code>T1()</code>，T1方法调用的时候，天知道里面做了什么事情（比如log，改变某些全局对象state等）。这里是要Link 两个对象的<code>__proto__</code>，用new的话，没有<code>Object.create()</code>来的纯粹。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">T1</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'creating T1 now...'</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">T2.prototype = <span class="keyword">new</span> T1(); <span class="comment">// `creating T1 now...` 可能调用者不需要这段log</span></div></pre></td></tr></table></figure>
+<p>##OO style 与 OLOO style的比较</p>
+<p>OO：object-oriented;<br>OLOO: objects-linked-to-other-objects;</p>
+<p>在js里，有时候用oo思想来实现一些东西，远没有用OLOO思想来的clean。</p>
+<p>OO style:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">who</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.me = who;</div><div class="line">&#125;</div><div class="line">Foo.prototype.identify = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="string">"I am "</span> + <span class="keyword">this</span>.me;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Bar</span>(<span class="params">who</span>) </span>&#123;</div><div class="line">	Foo.call( <span class="keyword">this</span>, who );</div><div class="line">&#125;</div><div class="line">Bar.prototype = <span class="built_in">Object</span>.create( Foo.prototype );</div><div class="line"></div><div class="line">Bar.prototype.speak = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	alert( <span class="string">"Hello, "</span> + <span class="keyword">this</span>.identify() + <span class="string">"."</span> );</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> b1 = <span class="keyword">new</span> Bar( <span class="string">"b1"</span> );</div><div class="line"><span class="keyword">var</span> b2 = <span class="keyword">new</span> Bar( <span class="string">"b2"</span> );</div><div class="line"></div><div class="line">b1.speak();</div><div class="line">b2.speak();</div></pre></td></tr></table></figure>
+<p>OLOO style:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Foo = &#123;</div><div class="line">	<span class="attr">init</span>: <span class="function"><span class="keyword">function</span>(<span class="params">who</span>) </span>&#123;</div><div class="line">		<span class="keyword">this</span>.me = who;</div><div class="line">	&#125;,</div><div class="line">	<span class="attr">identify</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="string">"I am "</span> + <span class="keyword">this</span>.me;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Bar = <span class="built_in">Object</span>.create( Foo );</div><div class="line"></div><div class="line">Bar.speak = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	alert( <span class="string">"Hello, "</span> + <span class="keyword">this</span>.identify() + <span class="string">"."</span> );</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> b1 = <span class="built_in">Object</span>.create( Bar );</div><div class="line">b1.init( <span class="string">"b1"</span> );</div><div class="line"><span class="keyword">var</span> b2 = <span class="built_in">Object</span>.create( Bar );</div><div class="line">b2.init( <span class="string">"b2"</span> );</div><div class="line"></div><div class="line">b1.speak();</div><div class="line">b2.speak();</div></pre></td></tr></table></figure>
+<p>可以看到用OLOO style就不需要用js所不擅长的new和prototype来实现了class了，易读性更强一些。</p>
+<p>##总结</p>
+<p>js没有class只有object（ES6的class也只是语法糖），从一个<code>object.__proto__</code> link 到另一个<code>object.__proto__</code>来达到copy。link的方式有两种:</p>
+<pre><code>1. var anotherobj = new Obj();
+2. var anotherobj = object.create(obj);
+</code></pre><blockquote>
+<p>js是一门弱类型语言，从不需要类型转换。对象继承变得无关紧要。对一个对象来说重要的是它能做什么，而不是它从哪里来。 —《Javascript语言精粹》</p>
+</blockquote>
+<p>P.S 这篇文章是我写的第二遍，第一遍清除mac垃圾的时候被我误删了，本来要发表了，结果找不到了，哭晕在厕所。不过第二遍我觉得思路清晰了好多，质量也高了好多。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Archive/" rel="tag">#Archive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/17/2015-12-17-reactnative-animations/" rel="next" title="ReactNative Animations">
+                <i class="fa fa-chevron-left"></i> ReactNative Animations
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/07/2016-01-07-2015/" rel="prev" title="2015总结">
+                2015总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/28/2015-12-28-you-dont-know-jsprototypes/"
+           data-title="You don't know js(prototypes)" data-url="http://xiekw2010.github.io/2015/12/28/2015-12-28-you-dont-know-jsprototypes/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/948e7df18383d2570eccec7d4f7cc1aa"
+               alt="xiekw2010" />
+          <p class="site-author-name" itemprop="name">xiekw2010</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiekw2010" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiekw2010</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiekw2010"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

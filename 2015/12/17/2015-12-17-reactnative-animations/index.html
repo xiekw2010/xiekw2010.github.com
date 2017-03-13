@@ -1,0 +1,774 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="blog" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative Animations">
+<meta property="og:url" content="http://xiekw2010.github.io/2015/12/17/2015-12-17-reactnative-animations/index.html">
+<meta property="og:site_name" content="xiekw2010">
+<meta property="og:description" content="blog">
+<meta property="og:image" content="http://img4.tbcdn.cn/L1/461/1/ae2faa694da012b1ae2e15b661de865aab4e04fd.png">
+<meta property="og:image" content="http://img3.tbcdn.cn/L1/461/1/22fdbf5e9a519fcfcdbcd715d429fffd221d911e.png">
+<meta property="og:image" content="http://img3.tbcdn.cn/L1/461/1/55c206e7041d20ce86bd6b85109785a3242e2351.png">
+<meta property="og:updated_time" content="2016-10-28T02:01:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative Animations">
+<meta name="twitter:description" content="blog">
+<meta name="twitter:image" content="http://img4.tbcdn.cn/L1/461/1/ae2faa694da012b1ae2e15b661de865aab4e04fd.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> ReactNative Animations | xiekw2010 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xiekw2010</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好记性不如烂 blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ReactNative Animations
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-12-17T17:53:30+08:00" content="2015-12-17">
+              2015-12-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Archive/" itemprop="url" rel="index">
+                    <span itemprop="name">Archive</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/17/2015-12-17-reactnative-animations/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/17/2015-12-17-reactnative-animations/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ReactNative不仅能做到H5那样的页面元素布局，还能做到像Native一样自然的动画。目前它有两套动画系统—<code>Animated</code>和<code>LayoutAnimation</code>。<code>Animated</code>更注重小而精细的动画控制，<code>LayoutAnimation</code>更关注全局布局类型的动画。</p>
+<p>##Animated</p>
+<p>先来看个简单的例子，在UIKit中做个简单的动画：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[UIView <span class="symbol">animateWithDuration:</span><span class="number">0</span>.<span class="number">3</span> <span class="symbol">animations:</span>^&#123;</div><div class="line">  aView.transform = CGAffineTransformMakeScale(<span class="number">1.2</span>, <span class="number">1.2</span>);</div><div class="line">&#125; <span class="symbol">completion:</span>^(BOOL finished) &#123;</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p>在RN中怎么做这个动画呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Playground</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props: any) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;</div><div class="line">      <span class="attr">bounceValue</span>: <span class="keyword">new</span> Animated.Value(<span class="number">0</span>),</div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line">  render(): ReactElement &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'rending...'</span>);</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;Animated.Image                         // Base: Image, Text, View</div><div class="line">        source=【【uri: 'http://i.imgur.com/XMKOH81.jpg'】】</div><div class="line">        style=【【</div><div class="line">          flex: 1,</div><div class="line">          transform: [                        // `transform` is an ordered array</div><div class="line">            &#123;scale: this.state.bounceValue&#125;,  // Map `bounceValue` to `scale`</div><div class="line">          ]</div><div class="line">        】】</div><div class="line">      /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">  componentDidMount() &#123;</div><div class="line">    this.state.bounceValue.setValue(0.8);     // Start large</div><div class="line">    Animated.timing(                          // Base: spring, decay, timing</div><div class="line"></div><div class="line">      this.state.bounceValue,                 // Animate `bounceValue`</div><div class="line">      &#123;</div><div class="line">        toValue: 1.2,                         // Animate to smaller size</div><div class="line">        duration: 2000,</div><div class="line">        delay: 1000,</div><div class="line">      &#125;</div><div class="line">    ).start();                                // Start the animation</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段JS代码，有三点需要解释一下：</p>
+<ol>
+<li>为什么<code>render</code>方法这里只执行一次，尽管这个<code>Animated.Image</code>的<code>transform</code>的值在做变化</li>
+<li><code>Animated.Image</code>这是个什么组件？它和<code>Image</code>有啥关系呢？</li>
+<li><code>bounceValue: new Animated.Value(0)</code> 的<code>Animated.Value</code>是什么?</li>
+<li>最后用到了native的Core Animation吗？怎么桥接的？</li>
+</ol>
+<p>解释：</p>
+<ol>
+<li><p>这里要回答第一个问题，需要先解释下第二个问题。什么是<code>Animated.Image</code>?</p>
+<p> 看Animated.js里的最后<code>module.exports</code>。</p>
+</li>
+</ol>
+<p><img src="http://img4.tbcdn.cn/L1/461/1/ae2faa694da012b1ae2e15b661de865aab4e04fd.png" alt="2"></p>
+<pre><code>这个Component是通过`createAnimatedComponent`包装的，那么这层包装做了什么呢？
+对传给Component的每个含有Animated属性的值做监听。下次`requestAnimationFrame`的时候，就去检测这些值有没有被修改，如果修改了，就用这个组件的setNativeProps来更新UI，这样做是不会重新渲染这个组件的整个DOM tree的，[详情说明](http://facebook.github.io/react-native/docs/direct-manipulation.html#content)。
+</code></pre><ol>
+<li>回答第一个问题，<code>transfrom</code>的值变化是内部组件由<code>requestAnimationFrame</code>而导致的，而不是传统的改变<code>state</code>或者<code>props</code>来驱动的。</li>
+<li>这个<code>Animated.Value(0)</code>是与<code>Animated.Component</code>约定好的一个属性类，当这个值按照动画曲线变化时，<code>Animated.Component</code>会追踪这个值，并更新自己那些用到<code>Animated.Value</code>的UI 属性，从而达到动画的效果。</li>
+<li>RN Animated系统没有用到native的动画系统。是自己用JS实现了一套动画系统，可能为了平台兼容性。</li>
+</ol>
+<p>总结: 整个过程如图所示</p>
+<p><img src="http://img3.tbcdn.cn/L1/461/1/22fdbf5e9a519fcfcdbcd715d429fffd221d911e.png" alt="3"></p>
+<p>##LayoutAnimation</p>
+<p>先看看用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> App = React.createClass(&#123;</div><div class="line">  componentWillMount() &#123;</div><div class="line">    <span class="comment">// Animate creation</span></div><div class="line">    LayoutAnimation.spring();</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  getInitialState() &#123;</div><div class="line">    <span class="keyword">return</span> &#123; <span class="attr">w</span>: <span class="number">100</span>, <span class="attr">h</span>: <span class="number">100</span> &#125;</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  _onPress() &#123;</div><div class="line">    <span class="comment">// Animate the update</span></div><div class="line">    LayoutAnimation.spring();</div><div class="line">    <span class="keyword">this</span>.setState(&#123;<span class="attr">w</span>: <span class="keyword">this</span>.state.w + <span class="number">15</span>, <span class="attr">h</span>: <span class="keyword">this</span>.state.h + <span class="number">15</span>&#125;)</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="attr">render</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;View style=&#123;styles.container&#125;&gt;</div><div class="line">        &lt;View style=&#123;[styles.box, &#123;width: this.state.w, height: this.state.h&#125;]&#125; /&gt;</div><div class="line">        &lt;TouchableOpacity onPress=&#123;this._onPress&#125;&gt;</div><div class="line">          &lt;View style=&#123;styles.button&#125;&gt;</div><div class="line">            &lt;Text style=&#123;styles.buttonText&#125;&gt;Press me!&lt;/Text&gt;</div><div class="line">          &lt;/View&gt;</div><div class="line">        &lt;/TouchableOpacity&gt;</div><div class="line">      &lt;/View&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>可以看到<code>LayoutAnimation</code>针对的是某个React的component，当component重新渲染时，它会用到这个animation。</p>
+<p>那么它是如何实现的呢？</p>
+<p>源码中可以看到它和Native bridge过来的<code>RCTUIManager</code>里用到。在看<code>RCTUIManager</code>对<code>LayoutAnimation</code>的时候，它是封装系统的Core Animation API.</p>
+<p><img src="http://img3.tbcdn.cn/L1/461/1/55c206e7041d20ce86bd6b85109785a3242e2351.png" alt="4"></p>
+<p>总结：<code>LayoutAnimation</code>是基于Native的animation，只是对单个component渲染到屏幕或者重新渲染时用到，但它的可控的细粒度没有<code>Animated</code>高。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Archive/" rel="tag">#Archive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/16/2015-11-16-react-native-view/" rel="next" title="React Native View布局">
+                <i class="fa fa-chevron-left"></i> React Native View布局
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/28/2015-12-28-you-dont-know-jsprototypes/" rel="prev" title="You don't know js(prototypes)">
+                You don't know js(prototypes) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/17/2015-12-17-reactnative-animations/"
+           data-title="ReactNative Animations" data-url="http://xiekw2010.github.io/2015/12/17/2015-12-17-reactnative-animations/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/948e7df18383d2570eccec7d4f7cc1aa"
+               alt="xiekw2010" />
+          <p class="site-author-name" itemprop="name">xiekw2010</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiekw2010" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiekw2010</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiekw2010"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

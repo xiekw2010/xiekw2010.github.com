@@ -1,0 +1,805 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="blog" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="You don't know js(this & prototypes)">
+<meta property="og:url" content="http://xiekw2010.github.io/2015/11/04/2015-11-04-you-dont-know-jsthis--prototypes/index.html">
+<meta property="og:site_name" content="xiekw2010">
+<meta property="og:description" content="blog">
+<meta property="og:updated_time" content="2016-10-28T02:00:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="You don't know js(this & prototypes)">
+<meta name="twitter:description" content="blog">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> You don't know js(this & prototypes) | xiekw2010 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xiekw2010</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好记性不如烂 blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                You don't know js(this & prototypes)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-04T17:53:30+08:00" content="2015-11-04">
+              2015-11-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Archive/" itemprop="url" rel="index">
+                    <span itemprop="name">Archive</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/04/2015-11-04-you-dont-know-jsthis--prototypes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/2015-11-04-you-dont-know-jsthis--prototypes/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间做了些H5的日常需求，详见<a href="https://ju.taobao.com/m/jusp/nv/haiwaiju/mtp.htm?spm=a2147.7632989.JU005.4&amp;spm-cnt=608.6750302.0.0.G0TwsM&amp;jhsstyle=qqjx&amp;from=" target="_blank" rel="external">全球精选</a>。觉得学好JS还是很有必要的，不管它是不是世界上最好的语言。Github上看到一本书<a href="https://github.com/getify/You-Dont-Know-JS" target="_blank" rel="external">You Dont know JS</a>，这本书介绍的概念算是比较清楚的。</p>
+<p>这周主要介绍JS的<code>this</code>。</p>
+<h2 id="this"><a href="#this" class="headerlink" title="####this"></a>####this</h2><p>先来做一个题目:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="string">"foo: "</span> + num );</div><div class="line">	<span class="keyword">this</span>.count++;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo.count = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> i;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</div><div class="line">	foo( i );</div><div class="line">&#125;</div><div class="line"><span class="comment">// foo: 0,</span></div><div class="line"><span class="comment">// foo: 1,</span></div><div class="line">...</div><div class="line"><span class="comment">// foo: 9,</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log( foo.count );</div></pre></td></tr></table></figure>
+<p>最后foo.count等于几呢 ？</p>
+<p>答案是0。如果对this的概念不清楚的话一般会认为答案是10。</p>
+<p>为什么呢？因为在<code>for</code>循环里调用<code>foo(i)</code>时，<code>this</code>指向的不是<code>foo</code>。如果你在游览器的环境里。可以把这段代码复制到console里测试一下。</p>
+<p>下面介绍几个方法，可以把foo.count结果输出为10。</p>
+<ol>
+<li>把<code>this.count++</code>改为<code>foo.count++</code>。</li>
+<li><p>使用对象来包装，代码如下</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="string">"foo: "</span> + num );</div><div class="line">	<span class="keyword">this</span>.count++;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo = &#123;</div><div class="line">	<span class="attr">bar</span>: foo,</div><div class="line">	<span class="attr">count</span>: <span class="number">0</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> i;</div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</div><div class="line">	foo.bar(i)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>for</code>循环里把<code>foo(i)</code>改为<code>foo.call(foo)</code>或者<code>foo.apply(foo)</code>, 代码如下：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="string">"foo: "</span> + num);</div><div class="line">	<span class="keyword">this</span>.count++;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo.count = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> i;</div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</div><div class="line">	foo.call(foo, i); <span class="comment">// 或者foo.apply(foo, [i]);</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用bind，代码如下：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">num</span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="string">"foo: "</span> + num );</div><div class="line">	<span class="keyword">this</span>.count++;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo.count = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> i;</div><div class="line"><span class="keyword">var</span> bar = foo.bind(foo);</div><div class="line"></div><div class="line"><span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</div><div class="line">	bar( i );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>为什么在<code>for</code>循环里调用<code>foo(i)</code>时，<code>this</code>指向的不是<code>foo</code>，它指向的是什么呢？</p>
+<p>现在可以重新打开一下游览器的console，再输入最开始的那段代码。接着在console里输入<code>foo.count</code>，结果应该是0，再继续看下去。</p>
+<p>然后<code>console</code>里输入<code>window.count</code>，结果是NaN。那么什么时候改了window.count的属性呢？(window没有count属性，可以重新打开游览器console，输入windown.count，结果应该是undefined).</p>
+<p>就是在<code>for</code>循环里调用<code>foo(i)</code>的时候。</p>
+<p>再来看一下解决方案2，用对象包装的方式，<code>foo.bar(i)</code>调用，最后调用者<code>foo</code>的<code>count</code>属性被改变了。所以<code>this</code>的指向决定于调用方法的调用地点(后面用<strong>call-site</strong>来指代这个)。</p>
+<p>理解<strong>call-site</strong>先来看个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">baz</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// call-stack is: `baz`</span></div><div class="line">    <span class="comment">// so, our call-site is in the global scope</span></div><div class="line"></div><div class="line">    <span class="built_in">console</span>.log( <span class="string">"baz"</span> );</div><div class="line">    bar(); <span class="comment">// &lt;-- call-site for `bar`</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// call-stack is: `baz` -&gt; `bar`</span></div><div class="line">    <span class="comment">// so, our call-site is in `baz`</span></div><div class="line"></div><div class="line">    <span class="built_in">console</span>.log( <span class="string">"bar"</span> );</div><div class="line">    foo(); <span class="comment">// &lt;-- call-site for `foo`</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// call-stack is: `baz` -&gt; `bar` -&gt; `foo`</span></div><div class="line">    <span class="comment">// so, our call-site is in `bar`</span></div><div class="line"></div><div class="line">    <span class="built_in">console</span>.log( <span class="string">"foo"</span> );</div><div class="line">&#125;</div><div class="line"></div><div class="line">baz(); <span class="comment">// &lt;-- baz的call-site是global对象，在游览器里也就是window。</span></div></pre></td></tr></table></figure>
+<p>所以理解了这个，再做个实验。还是将第一段代码copy进console，但是先等等，先在console输入<code>window.count=0</code>。然后再把第一段把copy进console。再输入<code>window.count</code>，可以看到结果是10。所以<code>foo</code>方法里的<code>this</code>指向的是call-site对象也就是js context的global对象<code>window</code>。</p>
+<p>但是，除了<strong>call-site</strong>外，我们看到前面的解决方法3和4。<code>bind</code>, <code>apply</code>, <code>call</code>。那么这些规则和<strong>call-site</strong>的优先级呢？除了这些规则还有什么规则。下面就人肉列举一下：</p>
+<h2 id="默认绑定"><a href="#默认绑定" class="headerlink" title="#####默认绑定"></a>#####默认绑定</h2><p>默认绑定就是<strong>call-site</strong>绑定，用的时候需要注意一下js的’use strict’。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">	"use strict"</span>;</div><div class="line"></div><div class="line">	<span class="built_in">console</span>.log( <span class="keyword">this</span>.a );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"></div><div class="line">foo(); <span class="comment">// TypeError: `this` is `undefined`</span></div></pre></td></tr></table></figure>
+<p>因为a是全局对象，foo()的<strong>call-site</strong>(window)调用a的时候，window对象在strict模式下不存在。所以a找不到，不然就会打印出2.</p>
+<h2 id="隐式绑定"><a href="#隐式绑定" class="headerlink" title="#####隐式绑定"></a>#####隐式绑定</h2><p>还是由<strong>call-site</strong>的位置决定，如下例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="keyword">this</span>.a );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj2 = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="number">42</span>,</div><div class="line">	<span class="attr">foo</span>: foo</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj1 = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="number">2</span>,</div><div class="line">	<span class="attr">obj2</span>: obj2</div><div class="line">&#125;;</div><div class="line"></div><div class="line">obj1.obj2.foo(); <span class="comment">// 42</span></div></pre></td></tr></table></figure>
+<p>有风险的是，很容易会造成隐式绑定丢失的问题，如下例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="keyword">this</span>.a );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="number">2</span>,</div><div class="line">	<span class="attr">foo</span>: foo</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> bar = obj.foo; <span class="comment">// function reference/alias!</span></div><div class="line"></div><div class="line">bar(); <span class="comment">// undefined</span></div><div class="line">obj.foo(); <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>虽然bar看上去是obj.foo的引用，但其实它最后指向的是foo, foo虽然是obj的对象，但不属于obj。</p>
+<p>所以这里就走到了<strong>默认绑定</strong>规则上去了。</p>
+<p>#####显式绑定</p>
+<p>就是之前提到的方案3和4，这里顺便介绍一下这三个方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">arg1, arg2, arg3</span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>call 用法: <code>foo.call(obj, arg1, arg2, arg3)</code></li>
+<li><p>apply 用法: <code>foo.call(obj, [arg1, arg2, arg3])</code></p>
+<p> 两个方法都显示指定了foo方法里this所指的对象是obj。不同的是call对foo方法的参数是一个一个的传，而apply是把他们放到一个数组里一下子传进去。apply最后参数拿出来也是按传的顺序拿出来的。</p>
+</li>
+<li><p>bind 用法: <code>var bar = foo.bind(obj, arg1, arg2, arg3);</code></p>
+<p> 它返回一个和foo实现一样的新函数，其他和call一样。</p>
+</li>
+</ol>
+<p>#####New 绑定</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">something = <span class="keyword">new</span> MyClass(..);</div></pre></td></tr></table></figure>
+<p>抛开传统的面向对象概念，这段代码做了以下事情：</p>
+<ol>
+<li>一个全新的对象被创建了。</li>
+<li>新对象的this就是MyClass方法里的this。</li>
+<li>除非MyClass里返回的是其他对象，不然就是this对象。</li>
+</ol>
+<p>如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.a = a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> bar = <span class="keyword">new</span> foo( <span class="number">2</span> );</div><div class="line"><span class="built_in">console</span>.log( bar.a ); <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>#####顺序</p>
+<p>按照规则来，绑定的优先级顺序是<strong>new binding</strong> &gt; <strong>explicit binding</strong> &gt; <strong>implicit binding</strong> &gt; <strong>default binding</strong></p>
+<p>#####间接寻址</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="built_in">console</span>.log( <span class="keyword">this</span>.a );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"><span class="keyword">var</span> o = &#123; <span class="attr">a</span>: <span class="number">3</span>, <span class="attr">foo</span>: foo &#125;;</div><div class="line"><span class="keyword">var</span> p = &#123; <span class="attr">a</span>: <span class="number">4</span> &#125;;</div><div class="line"></div><div class="line">o.foo(); <span class="comment">// 3</span></div><div class="line">(p.foo = o.foo)(); <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>这里<code>(p.foo = o.foo)</code>返回的是<code>foo</code>对象而不是<code>p.foo</code>所以log了全局的a对象。<br>写成这样就没有问题了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p.foo = o.foo;</div><div class="line">p.foo(); <span class="comment">// 4</span></div></pre></td></tr></table></figure>
+<p>#####ES6 箭头函数的this</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="comment">// return an arrow function</span></div><div class="line">	<span class="keyword">return</span> <span class="function">(<span class="params">a</span>) =&gt;</span> &#123;</div><div class="line">		<span class="comment">// `this` here is lexically adopted from `foo()`</span></div><div class="line">		<span class="built_in">console</span>.log( <span class="keyword">this</span>.a );</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj1 = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="number">2</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj2 = &#123;</div><div class="line">	<span class="attr">a</span>: <span class="number">3</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> bar = foo.call( obj1 );</div><div class="line">bar.call( obj2 ); <span class="comment">// 2, not 3!</span></div></pre></td></tr></table></figure>
+<p>为什么是this绑定的是obj1的对象而不是obj2的对象呢？</p>
+<p><code>foo.call(obj1)</code>的时候已经绑定了<code>obj1</code>是它的this对象，也就是<code>bar</code>的this对象是<code>obj1</code>, 箭头函数在其作用域内一旦被绑定this，那它就永远不会被修改，即使是new操作符。</p>
+<p>###总结</p>
+<p>虽然this的规则挺多挺绕的，但是优雅的js代码离不开它。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Archive/" rel="tag">#Archive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/31/2015-10-31-react-native/" rel="next" title="React Native通信过程">
+                <i class="fa fa-chevron-left"></i> React Native通信过程
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/16/2015-11-16-react-native-view/" rel="prev" title="React Native View布局">
+                React Native View布局 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/11/04/2015-11-04-you-dont-know-jsthis--prototypes/"
+           data-title="You don't know js(this & prototypes)" data-url="http://xiekw2010.github.io/2015/11/04/2015-11-04-you-dont-know-jsthis--prototypes/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/948e7df18383d2570eccec7d4f7cc1aa"
+               alt="xiekw2010" />
+          <p class="site-author-name" itemprop="name">xiekw2010</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiekw2010" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#this"><span class="nav-number">1.</span> <span class="nav-text">####this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认绑定"><span class="nav-number">2.</span> <span class="nav-text">#####默认绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式绑定"><span class="nav-number">3.</span> <span class="nav-text">#####隐式绑定</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiekw2010</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiekw2010"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

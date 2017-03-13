@@ -1,0 +1,805 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="blog" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native通信过程">
+<meta property="og:url" content="http://xiekw2010.github.io/2015/10/31/2015-10-31-react-native/index.html">
+<meta property="og:site_name" content="xiekw2010">
+<meta property="og:description" content="blog">
+<meta property="og:image" content="http://xiekw2010.github.io/../images/js2oc/1.png">
+<meta property="og:image" content="http://xiekw2010.github.io/../images/js2oc/2.jpeg">
+<meta property="og:image" content="http://xiekw2010.github.io/../images/js2oc/ReactNative2.png">
+<meta property="og:updated_time" content="2016-10-28T02:00:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native通信过程">
+<meta name="twitter:description" content="blog">
+<meta name="twitter:image" content="http://xiekw2010.github.io/../images/js2oc/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> React Native通信过程 | xiekw2010 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xiekw2010</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好记性不如烂 blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                React Native通信过程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-10-31T17:53:30+08:00" content="2015-10-31">
+              2015-10-31
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Archive/" itemprop="url" rel="index">
+                    <span itemprop="name">Archive</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/10/31/2015-10-31-react-native/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/31/2015-10-31-react-native/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Javascript-与-Objective-C-通信-2"><a href="#Javascript-与-Objective-C-通信-2" class="headerlink" title="####Javascript 与 Objective-C 通信(2)"></a>####Javascript 与 Objective-C 通信(2)</h2><p>上期讲了H5的JSBridge通信机制，这期讲讲React-Native的通信机制。</p>
+<p>目前React-Native做到的效果是这样的。</p>
+<p><img src="../images/js2oc/1.png" alt="image"></p>
+<p>最终可以实现到如下两点:</p>
+<ol>
+<li>OC有的类, JS也有。</li>
+<li>调用JS就像调用OC效果一样。</li>
+</ol>
+<p>它是如何做到的呢？我们先从程序入口开始看。</p>
+<h2 id="程序入口"><a href="#程序入口" class="headerlink" title="#####程序入口"></a>#####程序入口</h2><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// step1</div><div class="line">  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];</div><div class="line">// step2</div><div class="line">  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation</div><div class="line">                                                      moduleName:@"RN_CNNode"</div><div class="line">                                               initialProperties:nil</div><div class="line">                                                   launchOptions:launchOptions];</div><div class="line"></div><div class="line">  UIViewController *rootViewController = [[UIViewController alloc] init];</div><div class="line">// step3</div><div class="line">  rootViewController.view = rootView;</div></pre></td></tr></table></figure>
+<p>这段代码有什么效果呢？</p>
+<ol>
+<li><code>rootViewController</code>的内容显示将由<code>RCTRootView</code>来负责。</li>
+<li><code>RCTRootView</code>内容将由<code>jsCodeLocation</code>和<code>RN_CNNode</code>这个模块名来决定。</li>
+<li><code>jsCodeLocation</code>可以是一个网络资源。</li>
+</ol>
+<p>打开<code>jsCodeLocation</code>的文件，这是一个js执行文件。也就是我们写的所有js文件的打包结果。这里有个<a href="http://wapp.waptest.taobao.com/rct/jutry/mainjsbundle.js" target="_blank" rel="external">例子</a>。</p>
+<h2 id="模块配置表"><a href="#模块配置表" class="headerlink" title="#####模块配置表"></a>#####模块配置表</h2><p>如果js要调用oc的方法，那么js首先要知道oc有什么方法。所以在上面<code>RCTRootView</code>初始化的时候，oc要生成一个模块配置表传给js。那么这里oc是如何生成模块配置表的呢？</p>
+<p>在oc的<code>RCTBatchBridge</code>里做了如下事情:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">// 加载远程js执行文件到本地内存中。</div><div class="line">[self loadSource:^(__unused NSError *error, NSString *source) &#123;</div><div class="line">    sourceCode = source;</div><div class="line">&#125;];</div><div class="line"></div><div class="line">// 初始化本地模块列表</div><div class="line">[self initModules];</div><div class="line"></div><div class="line">// 设置执行js的虚拟机</div><div class="line">[self setupExecutor];</div><div class="line"></div><div class="line">// 打包本地的模块列表</div><div class="line">config = [weakSelf moduleConfig];</div><div class="line"></div><div class="line">// 用js虚拟机把本地模块列表传给js上下文。</div><div class="line">// 把这个config保存在js的一个`__fbBatchedBridgeConfig`全局变量里</div><div class="line">[weakSelf injectJSONConfiguration:config onComplete:^(__unused NSError *error) &#123;&#125;];</div><div class="line"></div><div class="line">// 把js执行线程加到runloop中去。      </div><div class="line">[weakSelf executeSourceCode:sourceCode];</div></pre></td></tr></table></figure>
+<p>在js的<code>MessageQueue</code>负责接受上面的全局变量，并在js端生成一个模块配置表。打印出来如下：</p>
+<pre><code>&quot;RCTImageEditingManager&quot;: {
+    &quot;methods&quot;: {
+      &quot;cropImage&quot;: {
+        &quot;type&quot;: &quot;remote&quot;,
+        &quot;methodID&quot;: 0
+      }
+    },
+    &quot;moduleID&quot;: 2
+},
+</code></pre><p>最后，js端和oc都保留了这份配置表，js在调用oc方式时，通过bridge里的配置表把模块方法转为模块ID和方法ID传给oc，oc通过bridge的模块配置表找到对应的方法执行之，以上述代码为例，流程大概是这样（先不考虑callback）：</p>
+<p><img src="../images/js2oc/2.jpeg" alt="2"></p>
+<h2 id="自动生成模块配置表"><a href="#自动生成模块配置表" class="headerlink" title="#####自动生成模块配置表"></a>#####自动生成模块配置表</h2><p>首先oc每个暴露给js的类要满足<code>@protocol(RCTBridgeModule)</code>协议。在implementation(.m文件里)需要写入这个宏<code>RCT_EXPORT_MODULE()</code>，这个宏做如下事情:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#define RCT_EXPORT_MODULE(js_name) \</span></div><div class="line">RCT_EXTERN void RCTRegisterModule(Class); \</div><div class="line">+ (NSString *)moduleName &#123; <span class="keyword">return</span> @<span class="comment">#js_name; &#125; \</span></div><div class="line">+ (void)load &#123; RCTRegisterModule(<span class="keyword">self</span>); &#125;</div></pre></td></tr></table></figure>
+<p>结合前面<code>RCTBridge</code>里的<code>initialize</code>方法来看：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">static unsigned int classCount;</div><div class="line">Class *classes = objc_copyClassList(&amp;classCount);</div><div class="line"></div><div class="line"><span class="keyword">for</span> (unsigned int i = <span class="number">0</span>; i &lt; classCount; i++)</div><div class="line">&#123;</div><div class="line">  Class cls = classes[i];</div><div class="line">  Class superclass = cls;</div><div class="line">  <span class="keyword">while</span> (superclass)</div><div class="line">  &#123;</div><div class="line">    <span class="keyword">if</span> (class_conformsToProtocol(superclass, @protocol(RCTBridgeModule)))</div><div class="line">    &#123;</div><div class="line">      <span class="keyword">if</span> (![RCTModuleClasses <span class="symbol">containsObject:</span>cls]) &#123;</div><div class="line">        RCTLogWarn(@<span class="string">"Class %@ was not exported. Did you forget to use "</span></div><div class="line">                   <span class="string">"RCT_EXPORT_MODULE()?"</span>, cls);</div><div class="line"></div><div class="line">        RCTRegisterModule(cls);</div><div class="line">        objc_setAssociatedObject(cls, &amp;RCTBridgeModuleClassIsRegistered,</div><div class="line">                                 @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    superclass = class_getSuperclass(superclass);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">free(classes);</div></pre></td></tr></table></figure>
+<p>从这里看出，oc代码在加载时就已经把所有满足<code>RCTBridgeModule</code>协议的类都提取出来了，并把这些类在程序初始化js上下文后(参见<code>RCTBatchBridge</code>)再解析其中暴露给JS的方法后做成配置表再传给js上下文。具体保存在<code>NativeModules</code>这个模块里。有兴趣的可以看一下RN源码的<code>AlertIOS.js</code>和<code>RCTAlertManager.m</code>。</p>
+<h2 id="调用流程"><a href="#调用流程" class="headerlink" title="#####调用流程"></a>#####调用流程</h2><p>接下来看看JS调用OC模块方法的详细流程，包括callback回调。这时需要细化一下上述的调用流程图：<br><img src="../images/js2oc/ReactNative2.png" alt=""></p>
+<p>看起来有点复杂，不过一步步说明，应该很容易弄清楚整个流程，图中每个流程都标了序号，从发起调用到执行回调总共有11个步骤，详细说明下这些步骤：</p>
+<ol>
+<li>JS端调用某个OC模块暴露出来的方法。</li>
+<li><p>把上一步的调用分解为ModuleName,MethodName,arguments，再扔给MessageQueue处理。<br>在初始化时模块配置表上的每一个模块都生成了对应的remoteModule对象，对象里也生成了跟模块配置表里一一对应的方法，这些方法里可以拿到自身的模块名，方法名，并对callback进行一些处理，再移交给MessageQueue。具体实现在MessageQueue.js的<code>_genModules</code>里。</p>
+</li>
+<li><p>在这一步把JS的callback函数缓存在MessageQueue的一个成员变量里，用CallbackID代表callback。在通过保存在MessageQueue的模块配置表把上一步传进来的ModuleName和MethodName转为ModuleID和MethodID。</p>
+</li>
+<li><p>把上述步骤得到的ModuleID,MethodId,CallbackID和其他参数argus传给OC。至于具体是怎么传的，后面再说。</p>
+</li>
+<li><p>OC接收到消息，通过模块配置表拿到对应的模块和方法。<br>实际上模块配置表已经经过处理了，跟JS一样，在初始化时OC也对模块配置表上的每一个模块生成了对应的实例并缓存起来，模块上的每一个方法也都生成了对应的RCTModuleMethod对象，这里通过ModuleID和MethodID取到对应的Module实例和RCTModuleMethod实例进行调用。具体实现在_handleRequestNumber:moduleID:methodID:params:。</p>
+</li>
+<li><p>RCTModuleMethod对JS传过来的每一个参数进行处理。<br>RCTModuleMethod可以拿到OC要调用的目标方法的每个参数类型，处理JS类型到目标类型的转换，所有JS传过来的数字都是NSNumber，这里会转成对应的int/long/double等类型，更重要的是会为block类型参数的生成一个block。<br>例如-(void)select:(int)index response:(RCTResponseSenderBlock)callback 这个方法，拿到两个参数的类型为int,block，JS传过来的两个参数类型是NSNumber,NSString(CallbackID)，这时会把NSNumber转为int，NSString(CallbackID)转为一个block，block的内容是把回调的值和CallbackID传回给JS。<br>这些参数组装完毕后，通过NSInvocation动态调用相应的OC模块方法。</p>
+</li>
+<li>OC模块方法调用完，执行block回调。</li>
+<li>调用到第6步说明的RCTModuleMethod生成的block。</li>
+<li>block里带着CallbackID和block传过来的参数去调JS里MessageQueue的方法invokeCallbackAndReturnFlushedQueue。</li>
+<li>MessageQueue通过CallbackID找到相应的JS callback方法。</li>
+<li>调用callback方法，并把OC带过来的参数一起传过去，完成回调。<br>整个流程就是这样，简单概括下，差不多就是：JS函数调用转ModuleID/MethodID -&gt; callback转CallbackID -&gt; OC根据ID拿到方法 -&gt; 处理参数 -&gt; 调用OC方法 -&gt; 回调CallbackID -&gt; JS通过CallbackID拿到callback执行。</li>
+</ol>
+<h2 id="事件响应"><a href="#事件响应" class="headerlink" title="#####事件响应"></a>#####事件响应</h2><p>上述第4步留下一个问题，JS是怎样把数据传给OC，让OC去调相应方法的？</p>
+<p>答案是通过返回值。JS不会主动传递数据给OC，在调OC方法时，会在上述第4步把ModuleID,MethodID等数据加到一个队列里，等OC过来调JS的任意方法时，再把这个队列返回给OC，此时OC再执行这个队列里要调用的方法。</p>
+<p>一开始不明白，设计成JS无法直接调用OC，需要在OC去调JS时才通过返回值触发调用，整个程序还能跑得通吗。后来想想纯native开发里的事件响应机制，就有点理解了。native开发里，什么时候会执行代码？只在有事件触发的时候，这个事件可以是启动事件，触摸事件，timer事件，系统事件，回调事件。而在React Native里，这些事件发生时OC都会调用JS相应的模块方法去处理，处理完这些事件后再执行JS想让OC执行的方法，而没有事件发生的时候，是不会执行任何代码的，这跟native开发里事件响应机制是一致的。</p>
+<p>说到OC调用JS，再补充一下，实际上模块配置表除了有上述OC的模块remoteModules外，还保存了JS模块localModules，OC调JS某些模块的方法时，也是通过传递ModuleID和MethodID去调用的，都会走到-enqueueJSCall:args:方法把两个ID和参数传给JS的BatchedBridge.callFunctionReturnFlushedQueue，跟JS调OC原理差不多，就不再赘述了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="#####总结"></a>#####总结</h2><p>安利一下React-Native的好处吧。</p>
+<ol>
+<li>很方便的桥接Native模块类(只要写在它提供的宏里就可以了)，so，JS可以很方便的调用native模块类。</li>
+<li>开发过程无需考虑OC的感受，遵从React框架的思想进行纯JS开发就行，剩下的事情React Native帮你处理好了。</li>
+<li>JS/OC不会频繁通信，只会在事件触发时批量传递，提高效率。</li>
+</ol>
+<h2 id="声明"><a href="#声明" class="headerlink" title="####声明"></a>####声明</h2><p>本文中的<strong>调用流程</strong>与<strong>事件响应</strong>摘自@bang的博客<a href="http://blog.cnbang.net/tech/2698/" target="_blank" rel="external">React Native通信机制详解</a>。由于这里我讲的是<code>RN 0.11.4</code>版本，<strong>调用流程</strong>的第二步原文提到的<code>BatchedBridgeFactory</code>已经在我这个版本废弃了，新版本统一使用<code>MessageQueue.js</code>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Archive/" rel="tag">#Archive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/17/2015-10-17-js-to-oc1-h5-bridge/" rel="next" title="JS to OC(1), H5 bridge">
+                <i class="fa fa-chevron-left"></i> JS to OC(1), H5 bridge
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/04/2015-11-04-you-dont-know-jsthis--prototypes/" rel="prev" title="You don't know js(this & prototypes)">
+                You don't know js(this & prototypes) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/10/31/2015-10-31-react-native/"
+           data-title="React Native通信过程" data-url="http://xiekw2010.github.io/2015/10/31/2015-10-31-react-native/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/948e7df18383d2570eccec7d4f7cc1aa"
+               alt="xiekw2010" />
+          <p class="site-author-name" itemprop="name">xiekw2010</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiekw2010" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Javascript-与-Objective-C-通信-2"><span class="nav-number">1.</span> <span class="nav-text">####Javascript 与 Objective-C 通信(2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序入口"><span class="nav-number">2.</span> <span class="nav-text">#####程序入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块配置表"><span class="nav-number">3.</span> <span class="nav-text">#####模块配置表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动生成模块配置表"><span class="nav-number">4.</span> <span class="nav-text">#####自动生成模块配置表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用流程"><span class="nav-number">5.</span> <span class="nav-text">#####调用流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件响应"><span class="nav-number">6.</span> <span class="nav-text">#####事件响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">#####总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明"><span class="nav-number">8.</span> <span class="nav-text">####声明</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiekw2010</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiekw2010"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

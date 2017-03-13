@@ -1,0 +1,882 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="blog" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="blog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="You don't know js(scopes & Closures)">
+<meta property="og:url" content="http://xiekw2010.github.io/2016/03/02/2016-03-02-you-dont-know-jsscopes--closures/index.html">
+<meta property="og:site_name" content="xiekw2010">
+<meta property="og:description" content="blog">
+<meta property="og:image" content="http://img4.tbcdn.cn/L1/461/1/818a2c121b1fff70c3b7461ab5a1f9308d67a7ec.png">
+<meta property="og:updated_time" content="2016-11-01T08:55:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="You don't know js(scopes & Closures)">
+<meta name="twitter:description" content="blog">
+<meta name="twitter:image" content="http://img4.tbcdn.cn/L1/461/1/818a2c121b1fff70c3b7461ab5a1f9308d67a7ec.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> You don't know js(scopes & Closures) | xiekw2010 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xiekw2010</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好记性不如烂 blog</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                You don't know js(scopes & Closures)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-02T17:53:30+08:00" content="2016-03-02">
+              2016-03-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Archive/" itemprop="url" rel="index">
+                    <span itemprop="name">Archive</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/02/2016-03-02-you-dont-know-jsscopes--closures/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/02/2016-03-02-you-dont-know-jsscopes--closures/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="作用域和闭包"><a href="#作用域和闭包" class="headerlink" title="作用域和闭包"></a>作用域和闭包</h1><p>最近读了 You don’t know js 的<code>Scope &amp; Closures</code>章节，记录一下学到的。</p>
+<h2 id="编译简介"><a href="#编译简介" class="headerlink" title="编译简介"></a>编译简介</h2><p>先简单介绍一下一般语言的编译过程：</p>
+<ol>
+<li><p>标记解释/词法分析</p>
+<p> 把一段字符串的程序解析成几个有意义的部分。比如<code>var a = 2;</code>在这一步中会被解释成<code>var</code>, <code>a</code>, <code>=</code>, <code>2</code>和<code>;</code>。这两个词的具体意思是什么呢？或者说区别是什么，举个例子，这里决定<code>a</code>是单独的一个标记，还是作为另外一个标记中的一部分比如说<code>var a</code>这是个单独的标记。词法分析就是在做这件事情。</p>
+</li>
+<li><p>解析</p>
+<p> 把上一步做的一系列的标记解析成一个抽象语法树(简称AST)。比如说<code>var a = 2</code>，可以被解析为：</p>
+<p> <img src="http://img4.tbcdn.cn/L1/461/1/818a2c121b1fff70c3b7461ab5a1f9308d67a7ec.png" alt="screenshot"></p>
+</li>
+<li><p>生成代码</p>
+<p> 这一步是把 AST 变成可执行代码    。这里先不做详细介绍了，只知道<code>var a = 2</code>最后的结果是会创建一个变量<code>a</code>(申请一个内存空间等等的操作)，然后把2这个值存进变量<code>a</code>。</p>
+</li>
+</ol>
+<p>但是 JS 不同于传统的预编译语言如(C, Java 等)，它是一门边运行边编译的语言。比如说这里的<code>var a = 2;</code>是在它被即可执行前才编译的，而不是在整个程序开始之前。这里是先编译分析<code>var a</code>的变量声明，再执行<code>a = 2</code>。</p>
+<p>作用域( scope )介绍：</p>
+<p>scope 是指一系列规则来决定一个变量在哪里怎么被找到。这个查找过程涉及这两种 LHS ( setter 查询，left-hand-side)、RHS ( getter 查询, right-hand-side）。</p>
+<p>先解释下 LHS 和 RHS，对于<code>var a = 2</code>：</p>
+<ol>
+<li>首先做 RHS 查询(RHS)，<code>var a</code>，查询<code>a</code>的变量，一个 getter 操作。</li>
+<li>然后<code>a = 2</code>，对变量 a 做一个赋值，属于一个 setter 操作。</li>
+</ol>
+<p>LHS 和 RHS 的差别在哪里？</p>
+<p>比如这段代码:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log( a + b );</div><div class="line">  b = a;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo(<span class="number">2</span>);</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>执行到<code>console.log( a + b )</code>的时候，compiler对这里做两个RHS查询，一个<code>a</code>和一个<code>b</code>。<code>a</code>在这里被赋值为 2 了，而<code>b</code>没有在当前作用域也就是<code>function foo</code>的<code>{}</code>里被声明。这时候，JS 会抛出一个b的<code>ReferenceError</code>错误。</p>
+<p>改一下代码(如果在浏览器环境做测试，请刷新下当前 console，下面例子请都这样操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  b = a;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo(<span class="number">2</span>);</div></pre></td></tr></table></figure>
+<p>执行到<code>b = a;</code>的时候，compiler 对这里的 b 做 LHS 操作，同样b也没有在<code>foo</code>中声明，可是没有报错。继续在 console 里输出 b，会得到 2 的结果。</p>
+<p>如果不在 JS 的严格模式下，compiler 会自动对 LHS 查询的变量做创建工作。</p>
+<p>在改一下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log( a + b );</div><div class="line">  b = a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> b = <span class="number">3</span>;</div><div class="line"></div><div class="line">foo(<span class="number">2</span>);</div></pre></td></tr></table></figure>
+<p>输出结果是5；<br>可以看到，LHS 和 RHS，是会 scope 向上查询的，直到找到了<code>var b</code>的声明。</p>
+<p>继续改：- -！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log( a + b );</div><div class="line">  b = a;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo(<span class="number">2</span>);</div><div class="line"><span class="keyword">var</span> b = <span class="number">3</span>;</div></pre></td></tr></table></figure>
+<p>输出结果是 NaN!</p>
+<p>引出下一个话题<code>Hoisting</code>(变量提升)。</p>
+<p>回到之前聊的 JS 编译过程，这段程序也是先编译<code>var b</code>, 再执行<code>b = 3</code>；整个程序编译后是这样的:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log( a + b ); <span class="comment">// b 是undefined</span></div><div class="line">  b = a;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> b;</div><div class="line"></div><div class="line">foo(<span class="number">2</span>);</div><div class="line">b = <span class="number">3</span>;</div></pre></td></tr></table></figure>
+<p>看上面的程序，一个是声明方法，另一个是声明变量。既然编译器不是程序的书写顺序来编译，那么如果我同时有一个变量名和方法名声明都叫 foo，这时候哪个优先级更高呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">foo(); <span class="comment">// 1</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log( <span class="number">2</span> );</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log( <span class="number">1</span> );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到变量 foo 是先声明的，可是方法 foo 是被优先编译的。编译后的代码如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo;</div><div class="line"></div><div class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure>
+<blockquote>
+<p>顺便提一句，JS里的方法声明和方法变量声明是不一样的</p>
+</blockquote>
+<p>方法变量声明：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">foo(); <span class="comment">// not ReferenceError, but TypeError!</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>这里编译为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> foo;</div><div class="line"></div><div class="line">foo(); <span class="comment">//不确定foo的类型是不是方法</span></div><div class="line"></div><div class="line">foo = <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>方法声明：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">foo(); <span class="comment">// 正常运行</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>看下一段程序：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">foo(); <span class="comment">// "b"</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> a = <span class="literal">true</span>;</div><div class="line"><span class="keyword">if</span> (a) &#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log( <span class="string">"a"</span> ); &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span> &#123;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; <span class="built_in">console</span>.log( <span class="string">"b"</span> ); &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果是 b! 这里涉及到两个问题：</p>
+<ol>
+<li>JS 的块作用域(<code>{...}</code>)并没有什么卵用。还是会用 else 里面的声明。</li>
+<li>方法声明编译的时候会被覆盖。</li>
+</ol>
+<p>继续聊下一个话题—块作用域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">  <span class="built_in">console</span>.log(i);</div><div class="line">&#125;</div><div class="line"></div><div class="line">i <span class="comment">//10</span></div></pre></td></tr></table></figure>
+<p>如果 JS 有像 C 语言一样的块级作用域，那么这里的 i 应该会抛出<code>ReferenceError</code>的错误。可是这里输出了 10，也就是说 JS 的块级作用域是无效的。</p>
+<p>那么 JS 是怎么来实现块级作用域呢？答案是 function。比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> b = <span class="number">2</span>;</div><div class="line"></div><div class="line">  <span class="comment">// some code</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// more code</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> c = <span class="number">3</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里的变量<code>b, c</code>和<code>function bar</code>都是对外隐藏的，只在<code>foo</code> function 的作用域里有效。</p>
+<p>既然 function 可以来隔离作用域，那么我们可以轻松实现作用域隔离。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123; <span class="comment">// &lt;-- insert this</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> a = <span class="number">3</span>;</div><div class="line">  <span class="built_in">console</span>.log( a ); <span class="comment">// 3</span></div><div class="line"></div><div class="line">&#125; <span class="comment">// &lt;-- and this</span></div><div class="line">foo(); <span class="comment">// &lt;-- and this</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log( a ); <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>但是这里又有<code>foo</code>这个函数名把全局的命名空间给污染了。JS 通常的解决方式是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"></div><div class="line">(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123; <span class="comment">// &lt;-- insert this</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> a = <span class="number">3</span>;</div><div class="line">  <span class="built_in">console</span>.log( a ); <span class="comment">// 3</span></div><div class="line"></div><div class="line">&#125;)(); <span class="comment">// &lt;-- and this</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log( a ); <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>这样既做到了作用域里面的变量没有污染全局，<code>foo</code>方法也没有污染全局。这种方式叫做立即执行函数表达式(IIFE–Invoking Function Expressions Immediately)</p>
+<h4 id="ES6-的-let-与-const"><a href="#ES6-的-let-与-const" class="headerlink" title="ES6 的 let 与 const"></a>ES6 的 let 与 const</h4><p>let 与 const 提供了 JS 的块级作用域。比如回到之前的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">  <span class="built_in">console</span>.log(i);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(i); <span class="comment">// ReferenceError</span></div></pre></td></tr></table></figure>
+<p>这里的<code>let i</code>就只在 for 循环里块级作用域中起效。</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>闭包的定义：</p>
+<blockquote>
+<p>Closure is when a function is able to remember and access its lexical scope even when that function is executing outside its lexical scope.</p>
+</blockquote>
+<p>简而言之，是指一个方法在它词法作用域外被调用的时候，还能引用到它词法作用域上下文的变量的方法。</p>
+<p>举个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(a);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> bar;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> baz = foo();</div><div class="line"></div><div class="line">baz(); <span class="comment">// 2 --baz() (也就是bar)在外部调用，还可以捕获到它上下文的变量`var a`</span></div></pre></td></tr></table></figure>
+<p>这里的 baz 就是闭包，它在外部被调用的时候还能”认识”变量<code>var a</code>，而变量<code>a</code>是在<code>foo</code>函数里声明的，并且只在<code>foo</code>函数里有效。</p>
+<p>看一个经典的理解闭包的案例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(i);</div><div class="line">  &#125;, i * <span class="number">1000</span> );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里的输出结果是，每一秒打印一个 6，一共打印了 5 次。</p>
+<p>如果是一个刚接触 JS 的人，可能会认为这里应该是1，2，3，4，5。每隔一秒打印一个。</p>
+<p>首先来看，为什么是输出 6。<code>setTimeout</code>函数是在 for 循环结束后执行的（即使<code>setTimeout(.., 0)</code>），for 循环结束的时候i的值是 6。所以打印了 5 次 6.</p>
+<p>回想之前说到的块级作用域，这里的<code>var i</code>不仅仅在 for 循环块级作用域中有作用，在全局作用域中也是有作用的，如果想要输出 1，2，3，4，5的话，那就让循环里的每个 i 都只在一个单独的作用域里。之前也说到，只有 function 可以有独立的作用域。</p>
+<p>所以这里尝试改成这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i= <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</div><div class="line">  (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(i);</div><div class="line">    &#125;, i * <span class="number">1000</span> );</div><div class="line">  &#125;)();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很遗憾，结果还是一样的，打印了 5 个 6。为什么呢？虽然这里用 IIFE 创建分割了循环的作用域，可是它什么都没有做，因为这是作用域啥都没干，i还是外部作用域变量的那个 i，i 的值没有在这个作用域中被捕获，还是循环后的6。</p>
+<p>所以这里尝试捕获一下 i 的在 IIFE 的作用域中:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</div><div class="line">  (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> j = i;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(j);</div><div class="line">    &#125;, j * <span class="number">1000</span> );</div><div class="line">  &#125;)();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>成功了！1，2，3，4，5 每隔一秒被打印了。</p>
+<p>更优雅些：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</div><div class="line">  (<span class="function"><span class="keyword">function</span>(<span class="params">j</span>)</span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(j);</div><div class="line">    &#125;, j * <span class="number">1000</span> );</div><div class="line">  &#125;)(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是说到底，我们的需求很简单，只是想要 for 循环的块级作用域起效果就行了，用闭包来实现作用域显得有些啰嗦。</p>
+<p>所以回想一下之前说到的ES6的<code>let</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</div><div class="line">  <span class="keyword">let</span> j = i; <span class="comment">// yay, block-scope for closure!</span></div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(j);</div><div class="line">  &#125;, j * <span class="number">1000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里每次，用 j 来创建一个有效的块级作用域就可以了。</p>
+<p>当然 ES6 对 for 循环里的 let 也做了特殊的行为操作—每次循环的时候都会自动创建一个新的 let i，所以可以像下面这么优雅的写了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= <span class="number">5</span>; i++) &#123;</div><div class="line">	setTimeout(<span class="function"><span class="keyword">function</span> <span class="title">timer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(i);</div><div class="line">  &#125;, i * <span class="number">1000</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="模块化开发"><a href="#模块化开发" class="headerlink" title="模块化开发"></a>模块化开发</h2><p>如果不是很了解前端模块化开发的价值，可以参考一下玉伯的这篇文章—<a href="https://github.com/seajs/seajs/issues/547" target="_blank" rel="external">前端模块化开发的价值</a>。</p>
+<h4 id="Revealing-Module"><a href="#Revealing-Module" class="headerlink" title="Revealing Module"></a>Revealing Module</h4><p>下面这段是典型的一个 Revealing 模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">CoolModule</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> something = <span class="string">"cool"</span>;</div><div class="line">  <span class="keyword">var</span> another = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(something);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">doAnother</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(another.join(<span class="string">" ! "</span>));</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">doSomething</span>: doSomething,</div><div class="line">    <span class="attr">doAnother</span>: doAnother</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> foo = CoolModule();</div><div class="line"></div><div class="line">foo.doSomething(); <span class="comment">// cool</span></div><div class="line">foo.doAnother(); <span class="comment">// 1 ! 2 ! 3</span></div></pre></td></tr></table></figure>
+<p>上面这段模块化的代码做到了什么：</p>
+<ol>
+<li>如果外部不调用<code>CoolModule()</code>方法的话，方法体里面的代码是不会被编译执行的(前面说到过 JS 是边编译边执行的)</li>
+<li><code>CoolModule</code>返回了一个新对象，只有新对象里的属性(闭包方法)能访问<code>CoolModule</code>这个作用域里的变量(有点像私有属性了)</li>
+</ol>
+<h4 id="Modern-Modules"><a href="#Modern-Modules" class="headerlink" title="Modern Modules"></a>Modern Modules</h4><p>现在已经有很多库在这方面都做的不错了，这里介绍个最简单的概念实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MyModules = (<span class="function"><span class="keyword">function</span> <span class="title">Manager</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> modules = &#123;&#125;;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">define</span>(<span class="params">name, deps, impl</span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; deps.length; i++) &#123;</div><div class="line">      deps[i] = modules[deps[i]];</div><div class="line">    &#125;</div><div class="line">    modules[name] = impl.apply(impl, deps);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> modules[name];</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    define,</div><div class="line">    get</div><div class="line">  &#125;;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>这段代码同时包含了模块的导出，和模块的引入功能，看下如何使用它：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">MyModules.define(<span class="string">"bar"</span>, [], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">who</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Let me introduce: "</span> + who;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">hello</span>: hello</div><div class="line">  &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>定义bar模块，并且在这个模块里不引入其他模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">MyModules.define(<span class="string">"foo"</span>, [<span class="string">"bar"</span>], <span class="function"><span class="keyword">function</span> (<span class="params">bar</span>) </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">awesome</span>(<span class="params">which</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(bar.hello(which).toUpperCase());</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    awesome</div><div class="line">  &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>定义另外 foo 模块，并且在 foo 模块中引入 bar 模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> foo = MyModules.get(<span class="string">"foo"</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(</div><div class="line">  bar.hello(<span class="string">"hippo"</span>)</div><div class="line">); <span class="comment">// Let me introduce: hippo</span></div><div class="line"></div><div class="line">foo.awesome(<span class="string">"David"</span>); <span class="comment">// LET ME INTRODUCE: DAVID</span></div></pre></td></tr></table></figure>
+<p>JS 里的模块化，有两点必须要满足：</p>
+<ol>
+<li>通过一个外部的方法来创建作用域。</li>
+<li>外部方法返回的对象至少要有一个闭包来捕获方法作用域里的其他内部对象。</li>
+</ol>
+<h3 id="一道微博流行的面试题"><a href="#一道微博流行的面试题" class="headerlink" title="一道微博流行的面试题"></a>一道微博流行的面试题</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert (<span class="number">1</span>); &#125;;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line">Foo.getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert (<span class="number">2</span>);&#125;;</div><div class="line">Foo.prototype.getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert (<span class="number">3</span>);&#125;;</div><div class="line"><span class="keyword">var</span> getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert (<span class="number">4</span>);&#125;;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123; alert (<span class="number">5</span>);&#125;</div><div class="line"></div><div class="line"><span class="comment">//请写出以下输出结果：</span></div><div class="line"><span class="number">1.</span> Foo.getName();</div><div class="line"><span class="number">2.</span> getName();</div><div class="line"><span class="number">3.</span> Foo().getName();</div><div class="line"><span class="number">4.</span> getName();</div><div class="line"><span class="number">4.</span> <span class="keyword">new</span> Foo.getName();</div><div class="line"><span class="number">5.</span> <span class="keyword">new</span> Foo().getName();</div><div class="line"><span class="number">6.</span> <span class="keyword">new</span> <span class="keyword">new</span> Foo().getName();</div></pre></td></tr></table></figure>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>答案是：</p>
+<ol>
+<li>2 — Foo对象的属性方法</li>
+<li><p>4 — 编译后的代码如下</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="number">1</span>); &#125;;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123; alert(<span class="number">5</span>);&#125;	<span class="comment">// 函数声明高于变量声明</span></div><div class="line"><span class="keyword">var</span> getName;</div><div class="line"></div><div class="line">getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="number">4</span>);&#125;;</div><div class="line"></div><div class="line">Foo.getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="number">2</span>);&#125;;</div><div class="line">Foo.prototype.getName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alert(<span class="number">3</span>);&#125;;</div><div class="line"></div><div class="line">getName(); <span class="comment">// 4</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>1 — Foo()调用过程中 1. 更改了 getName 变量的实现 2. Foo() 返回的对象是全局对象 this。所以 getName() 还是全局对象的调用只不过实现改了。</p>
+</li>
+</ol>
+<p>4、5、6 首先考验的是对 JS 运算优先级的认识，不熟悉可以先参考<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence" target="_blank" rel="external">MDN的资料</a>再考虑答案是什么。</p>
+<p>IV. 2 — 点操作优先级高于<code>new</code>操作符，所以这里<code>new (Foo.getName)()</code>，也就是 2</p>
+<p>V. 3 — 根据操作符优先级，首先翻译为<code>(new Foo()).getName()</code>，<code>new Foo()</code>返回一个与 Foo 原型链链接的新对象而不是<code>Foo()</code>返回的全局对象。这里这个新对象就去找<code>Foo.prototype</code>上的<code>getName</code>属性。</p>
+<p>VI. 3 — 和上一个一样，只不过是又多了个 new 操作。</p>
+<h2 id="动态作用域"><a href="#动态作用域" class="headerlink" title="动态作用域"></a>动态作用域</h2><p>之前介绍都是词法作用域，解释了JS在编译期间是如何查找变量的规则。现在看看 JS 运行时候的作用域是怎么定义的，JS 里的 this 就是动态作用域来决定的(之前一篇介绍<a href="http://xiekw2010.github.io/2015/11/04/you-dont-know-jsthis-prototypes">this</a>的)。</p>
+<p>举个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(a);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> a = <span class="number">3</span>;</div><div class="line">  foo();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</div><div class="line"></div><div class="line">bar();</div></pre></td></tr></table></figure>
+<p>这里会输出 2 还是 3 呢？</p>
+<p>从词法作用域角度来看，编译的时候，是先去找<code>foo</code>里的 a 变量，找不到，然后去找全局的 a，全局的是2。所以<code>foo()</code>稳稳的输出 2。</p>
+<p>可是，在<code>bar</code>运行的时候，<code>foo</code>同样也会去找 a 的值，但是它首先会在<code>bar</code>的作用域里查找，所以<code>bar</code>稳稳的输出 3。</p>
+<p>所以除了考虑词法作用域(编译时查找)，动态作用域也是要考虑的(运行时查找）。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Archive/" rel="tag">#Archive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/11/2016-02-11-rngitfeed/" rel="next" title="一次RN跨平台开发之旅 GitFeed">
+                <i class="fa fa-chevron-left"></i> 一次RN跨平台开发之旅 GitFeed
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/可以做-js-面试实战题吗/" rel="prev" title="可以做 js 面试实战题吗">
+                可以做 js 面试实战题吗 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/02/2016-03-02-you-dont-know-jsscopes--closures/"
+           data-title="You don't know js(scopes & Closures)" data-url="http://xiekw2010.github.io/2016/03/02/2016-03-02-you-dont-know-jsscopes--closures/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/948e7df18383d2570eccec7d4f7cc1aa"
+               alt="xiekw2010" />
+          <p class="site-author-name" itemprop="name">xiekw2010</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">78</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xiekw2010" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#作用域和闭包"><span class="nav-number">1.</span> <span class="nav-text">作用域和闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译简介"><span class="nav-number">1.1.</span> <span class="nav-text">编译简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ES6-的-let-与-const"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">ES6 的 let 与 const</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-number">1.2.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块化开发"><span class="nav-number">1.3.</span> <span class="nav-text">模块化开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Revealing-Module"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">Revealing Module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Modern-Modules"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">Modern Modules</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一道微博流行的面试题"><span class="nav-number">1.3.1.</span> <span class="nav-text">一道微博流行的面试题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态作用域"><span class="nav-number">1.4.</span> <span class="nav-text">动态作用域</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiekw2010</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xiekw2010"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>
