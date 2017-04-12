@@ -57,25 +57,34 @@
 
 
 
-<meta name="description" content="最近想把 http://bonwechat.com 后端的数据服务改造成 Parse Server 的。
-什么是 Parse Server?可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！
-为什么是 Parse Server?
-成熟的客户端数据 SDK 接口 — iOS，android，php，j">
+<meta name="description" content="stream handbook如果对 stream 还不熟悉，先请阅读下这篇文章 stream-handbook。
+总结下这篇文章：
+
+stream 使得编程模型概念变简单。
+stream 可以节省内存开销，从 readable 到 writeable，readable 读多少，writeable 写多少，用完就删除。
+
+stream 的关键就是 这个 api 的实现（也就是 linux 里面的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Learn Parse Server">
-<meta property="og:url" content="http://xiekw2010.github.io/2016/11/15/Learn-Parse-Server/index.html">
+<meta property="og:title" content="node 学习笔记之 stream">
+<meta property="og:url" content="http://xiekw2010.github.io/2017/04/12/node-学习笔记之-stream/index.html">
 <meta property="og:site_name" content="xiekw2010">
-<meta property="og:description" content="最近想把 http://bonwechat.com 后端的数据服务改造成 Parse Server 的。
-什么是 Parse Server?可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！
-为什么是 Parse Server?
-成熟的客户端数据 SDK 接口 — iOS，android，php，j">
-<meta property="og:updated_time" content="2016-11-17T06:39:34.000Z">
+<meta property="og:description" content="stream handbook如果对 stream 还不熟悉，先请阅读下这篇文章 stream-handbook。
+总结下这篇文章：
+
+stream 使得编程模型概念变简单。
+stream 可以节省内存开销，从 readable 到 writeable，readable 读多少，writeable 写多少，用完就删除。
+
+stream 的关键就是 这个 api 的实现（也就是 linux 里面的">
+<meta property="og:updated_time" content="2017-04-12T03:53:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Learn Parse Server">
-<meta name="twitter:description" content="最近想把 http://bonwechat.com 后端的数据服务改造成 Parse Server 的。
-什么是 Parse Server?可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！
-为什么是 Parse Server?
-成熟的客户端数据 SDK 接口 — iOS，android，php，j">
+<meta name="twitter:title" content="node 学习笔记之 stream">
+<meta name="twitter:description" content="stream handbook如果对 stream 还不熟悉，先请阅读下这篇文章 stream-handbook。
+总结下这篇文章：
+
+stream 使得编程模型概念变简单。
+stream 可以节省内存开销，从 readable 到 writeable，readable 读多少，writeable 写多少，用完就删除。
+
+stream 的关键就是 这个 api 的实现（也就是 linux 里面的">
 
 
 
@@ -93,7 +102,7 @@
   };
 </script>
 
-  <title> Learn Parse Server | xiekw2010 </title>
+  <title> node 学习笔记之 stream | xiekw2010 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -213,7 +222,7 @@
             
             
               
-                Learn Parse Server
+                node 学习笔记之 stream
               
             
           </h1>
@@ -225,8 +234,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-15T17:47:17+08:00" content="2016-11-15">
-              2016-11-15
+            <time itemprop="dateCreated" datetime="2017-04-12T11:52:41+08:00" content="2017-04-12">
+              2017-04-12
             </time>
           </span>
 
@@ -236,8 +245,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/15/Learn-Parse-Server/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/15/Learn-Parse-Server/" itemprop="commentsCount"></span>
+                <a href="/2017/04/12/node-学习笔记之-stream/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/12/node-学习笔记之-stream/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -259,48 +268,32 @@
       
 
       
-        <p>最近想把 <a href="http://bonwechat.com" target="_blank" rel="external">http://bonwechat.com</a> 后端的数据服务改造成 Parse Server 的。</p>
-<h2 id="什么是-Parse-Server"><a href="#什么是-Parse-Server" class="headerlink" title="什么是 Parse Server?"></a>什么是 Parse Server?</h2><p>可以理解为是一个数据服务，对比国内的 leancloud，但它是开源，可以进行很多定制化的事情。马上就要有个自己的云服务了，这件事情，想想就令人激动！</p>
-<h2 id="为什么是-Parse-Server"><a href="#为什么是-Parse-Server" class="headerlink" title="为什么是 Parse Server?"></a>为什么是 Parse Server?</h2><ol>
-<li>成熟的客户端数据 SDK 接口 — iOS，android，php，js，windows等等的（虽然现在只用到 js，- -!）。</li>
-<li>有个美观强大 dashboard 界面。</li>
-<li>一整套的解决服务端恼人的 social，ACL，用户，权限等的数据关系。</li>
-<li>易于在 js 系统中部署。</li>
-<li>移动设备 notification push 机制。</li>
-<li>cloud code 可以进行定制定时服务在云端跑。</li>
-<li>可伸缩扩展的服务端和数据库架构。</li>
-<li>日志系统，虽然这是 web 框架的标配。</li>
-</ol>
-<p>感觉有点像哥伦布发现新大陆了，好兴奋哦！</p>
-<h2 id="我是怎么迁移原来的-egg-服务的？"><a href="#我是怎么迁移原来的-egg-服务的？" class="headerlink" title="我是怎么迁移原来的 egg 服务的？"></a>我是怎么迁移原来的 <a href="https://eggjs.org/" target="_blank" rel="external">egg</a> 服务的？</h2><p>有两个目的：</p>
+        <h2 id="stream-handbook"><a href="#stream-handbook" class="headerlink" title="stream handbook"></a>stream handbook</h2><p>如果对 stream 还不熟悉，先请阅读下这篇文章 <a href="https://github.com/substack/stream-handbook" target="_blank" rel="external">stream-handbook</a>。</p>
+<p>总结下这篇文章：</p>
 <ol>
-<li>保持原来的网站和接口服务</li>
-<li>把原来的数据服务用 parse server 来存储</li>
+<li>stream 使得编程模型概念变简单。</li>
+<li>stream 可以节省内存开销，从 readable 到 writeable，readable 读多少，writeable 写多少，用完就删除。</li>
 </ol>
-<p>第一个目的：</p>
-<p>  要做到其实很简单，保持原来的 mongo 和 egg 服务</p>
-<p>第二个目的：</p>
-<p>  有三件事情：</p>
-<ol>
-<li>把 parse server 和 parse dashboard 要结合起来，并有一个专门服务于这个 parse 后台的 mongo</li>
-<li>把原来的 egg mongo 的数据导入到新的 mongo parse 后台里去。</li>
-<li><p>egg 的存数据库服务现在改成 egg 做为 parse 客户端调用 parse 后台的服务来存数据了。</p>
-<p>目标1：</p>
-<p>另起一个 express app，把 parse server 和 parse dashboard 作为 middleware 加进去。f8app 就是这样做的。后续还可以加入 graphql</p>
-<p>目的2：</p>
-<p>写一个导入的脚本就行了，用 monk 从原来的数据库取数据，再存入到新的 parse 后台去</p>
-<p>目的3：</p>
-<p>把 egg 里原来用 monk 存的代码改成 parse 存就行了。</p>
-<p>so easy！  </p>
-</li>
-</ol>
-<h2 id="一些-parse-SDK-的小技巧"><a href="#一些-parse-SDK-的小技巧" class="headerlink" title="一些 parse SDK 的小技巧"></a>一些 parse SDK 的小技巧</h2><ol>
-<li>原来为 egg 专门做了数据的分页加载功能，现在用 parse SDK 可以轻松实现</li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> getTitle = <span class="function"><span class="params">r</span> =&gt;</span> r.get(<span class="string">'desc'</span>)</div><div class="line"><span class="keyword">const</span> step = <span class="number">100</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> Look = Parse.Object.extend(<span class="string">'Look'</span>)</div><div class="line"><span class="keyword">const</span> query = <span class="keyword">new</span> Parse.Query(Look)</div><div class="line">query.descending(<span class="string">"crawledAt"</span>)</div><div class="line">query.limit(step)</div><div class="line"></div><div class="line"><span class="keyword">let</span> skip = <span class="number">0</span></div><div class="line"><span class="keyword">let</span> sentil = [<span class="number">1</span>]</div><div class="line"><span class="keyword">let</span> res = []</div><div class="line"><span class="keyword">while</span> (sentil.length &gt; <span class="number">0</span>) &#123;</div><div class="line">  query.skip(skip)</div><div class="line">  sentil = (<span class="keyword">yield</span> query.find()).map(getTitle)</div><div class="line">  res = res.concat(sentil)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'skip is'</span>, skip)</div><div class="line">  skip += step</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'res is'</span>, res.filter(<span class="function"><span class="params">r</span> =&gt;</span> !!r.length).length)</div><div class="line"></div><div class="line"><span class="keyword">return</span> res</div><div class="line"><span class="string">``</span><span class="string">`  </span></div><div class="line"></div><div class="line">2. 字符串匹配查询，这里因为要模糊匹配，还是用正则最稳，虽然有点牺牲效率，没有用到数据库 index 的功能</div><div class="line"></div><div class="line">`<span class="string">``</span>js</div><div class="line"><span class="keyword">const</span> target = <span class="string">'parse server 强无敌'</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> Look = Parse.Object.extend(<span class="string">'Look'</span>)</div><div class="line"><span class="keyword">const</span> tquery = <span class="keyword">new</span> Parse.Query(Look)</div><div class="line">tquery.descending(<span class="string">"crawledAt"</span>)</div><div class="line">tquery.matches(<span class="string">'title'</span>, <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`.*<span class="subst">$&#123;target&#125;</span>.*`</span>))</div><div class="line"></div><div class="line"><span class="keyword">const</span> dquery = <span class="keyword">new</span> Parse.Query(Look)</div><div class="line">dquery.descending(<span class="string">"crawledAt"</span>)</div><div class="line">dquery.matches(<span class="string">'desc'</span>, <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`.*<span class="subst">$&#123;target&#125;</span>.*`</span>))</div><div class="line"></div><div class="line"><span class="keyword">const</span> res =  <span class="keyword">yield</span> Parse.Query.or(tquery, dquery).find()</div><div class="line"><span class="keyword">return</span> res.map(<span class="function"><span class="params">r</span> =&gt;</span> [r.get(<span class="string">'title'</span>), r.get(<span class="string">'desc'</span>)])</div></pre></td></tr></table></figure>
-<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>有了 parse server 后，省去了好多后台数据的开发工作，并且同时有了各种平台的数据服务 SDK 了，它的标准已经实现了覆盖 90% 的数据服务。剩下的 10% 也完全可以由灵活的 cloud code cover 到。</p>
-<p>稍微有些蛋疼的就是，每次新建个 app 要重新发布一下，必须得在后台手动加入，parse 并没有开源增加 app 的总 dashboard。</p>
-<p>不过现在的 dashboard 也够用了。</p>
+<p>stream 的关键就是 <figure class="highlight plain"><figcaption><span>这个 api 的实现（也就是 linux 里面的 ```|```），这个 api 的核心逻辑如下：</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">```js</div><div class="line">readable.on(&apos;data&apos;, function (data) &#123;</div><div class="line">  if (false === writable.write(data)) &#123;</div><div class="line">    readable.pause()</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">writable.on(&apos;drain&apos;, function () &#123;</div><div class="line">  readable.resume()</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><figcaption><span>是一个可写流```Writable```对象，上游调用其 write 方法将数据写入其中。</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">writable 内部维护了一个写队列，当这个队列长度达到某个阈值（state.highWaterMark）时，</div><div class="line">执行 write() 时返回 false，否则返回 true。</div><div class="line"></div><div class="line">于是上游可以根据 write() 的返回值在流动模式和暂停模式间切换。</div><div class="line"></div><div class="line">当 write() 返回 false 时，调用 readable.pause() 使上游进入暂停模式，不再触发 data 事件。</div><div class="line"></div><div class="line">但是当 writable 将缓存清空时，会触发一个 drain 事件，再调用 readable.resume() 使上游进入流动模式，继续触发 data 事件。</div><div class="line"></div><div class="line">## stream 的类型</div><div class="line"></div><div class="line">```js</div><div class="line">var Stream = require(&apos;stream&apos;)</div><div class="line"></div><div class="line">var Readable = Stream.Readable</div><div class="line">var Writable = Stream.Writable</div><div class="line">var Duplex = Stream.Duplex</div><div class="line">var Transform = Stream.Transform</div></pre></td></tr></table></figure>
+<p>Readable.pipe(Duplex).pipe(Writable)</p>
+<p>Readable 可以 pipe 到 Writable 里去，反之不行。</p>
+<p>但是 Duplex 即是 Readable 又是 Writable，所以这里可以做为中间的桥接。</p>
+<p>Transform 继承自 Duplex，但是与 duplex 的差别在于，pipe 进它 writeable 里的 buffer 经过转换后自动添加到 readable，一般来说，不必重写它的 _read 和 _write 方法，只要实现转换方法 _transform 就行了。</p>
+<h2 id="怎么实现一个类似-gulp-的-pipe-功能"><a href="#怎么实现一个类似-gulp-的-pipe-功能" class="headerlink" title="怎么实现一个类似 gulp 的 pipe 功能"></a>怎么实现一个类似 gulp 的 pipe 功能</h2><p>大致 api 功能：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> gulp.src(paths.scripts)</div><div class="line">  .pipe(sourcemaps.init())</div><div class="line">  .pipe(coffee())</div><div class="line">  .pipe(uglify())</div><div class="line">  .pipe(concat(<span class="string">'all.min.js'</span>))</div><div class="line">  .pipe(sourcemaps.write())</div><div class="line">  .pipe(gulp.dest(<span class="string">'build/js'</span>))</div></pre></td></tr></table></figure>
+<p>把 paths.scripts 里的 js 代码经过一系列的 stream 的转换最后输出到 gulp.dest(‘build/js’) 里。</p>
+<p>其中 <figure class="highlight plain"><figcaption><span>等等是返回一个个 Duplex 的 stream。</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">这里大致实现一个最简单的 demo：</div><div class="line"></div><div class="line">``` js</div><div class="line">const fs = require(&apos;fs&apos;)</div><div class="line">const thr = require(&apos;through2&apos;)</div><div class="line"></div><div class="line">const rs = fs.createReadStream(&apos;./pipe.js&apos;)</div><div class="line">const ws = fs.createWriteStream(&apos;./sout&apos;)</div><div class="line"></div><div class="line">rs</div><div class="line">  .pipe(replaceConstWithVar())</div><div class="line">  .pipe(toUpperCase())</div><div class="line">  .pipe(ws)</div><div class="line"></div><div class="line">function toUpperCase() &#123;</div><div class="line">  return thr(function (chunk, enc, next) &#123;</div><div class="line">    const str = chunk.toString(&apos;utf8&apos;).toUpperCase()</div><div class="line">    next(null, Buffer.from(str, &apos;utf8&apos;))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">function replaceConstWithVar() &#123;</div><div class="line">  return thr(function (chunk, enc, next) &#123;</div><div class="line">    const str = chunk.toString(&apos;utf8&apos;).replace(/const/ig, &apos;var&apos;)</div><div class="line">    next(null, Buffer.from(str, &apos;utf8&apos;))</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里实现了 Transform 的 stream，对进来的数据做一系列的转换。</p>
+<p>可以到的结果如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">VAR FS = REQUIRE(<span class="string">'FS'</span>)</div><div class="line">VAR THR = REQUIRE(<span class="string">'THROUGH2'</span>)</div><div class="line"></div><div class="line">VAR RS = FS.CREATEREADSTREAM(<span class="string">'./PIPE.JS'</span>)</div><div class="line">VAR WS = FS.CREATEWRITESTREAM(<span class="string">'./SOUT'</span>)</div><div class="line"></div><div class="line">RS</div><div class="line">  .PIPE(REPLACEVARWITHVAR())</div><div class="line">  .PIPE(TOUPPERCASE())</div><div class="line">  .PIPE(WS)</div><div class="line"></div><div class="line">FUNCTION TOUPPERCASE() &#123;</div><div class="line">  RETURN THR(FUNCTION (CHUNK, ENC, NEXT) &#123;</div><div class="line">    VAR STR = CHUNK.TOSTRING(<span class="string">'UTF8'</span>).TOUPPERCASE()</div><div class="line">    NEXT(NULL, BUFFER.FROM(STR, <span class="string">'UTF8'</span>))</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">FUNCTION REPLACEVARWITHVAR() &#123;</div><div class="line">  RETURN THR(FUNCTION (CHUNK, ENC, NEXT) &#123;</div><div class="line">    VAR STR = CHUNK.TOSTRING(<span class="string">'UTF8'</span>).REPLACE(<span class="regexp">/VAR/</span>IG, <span class="string">'VAR'</span>)</div><div class="line">    NEXT(NULL, BUFFER.FROM(STR, <span class="string">'UTF8'</span>))</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://tech.meituan.com/stream-basics.html" target="_blank" rel="external">Node.js Stream - 基础篇</a></li>
+<li><a href="http://fe.meituan.com/stream-internals.html" target="_blank" rel="external">Node.js Stream - 进阶篇</a></li>
+<li><a href="http://fe.meituan.com/stream-in-action.html" target="_blank" rel="external">Node.js Stream - 实战篇</a></li>
+<li><a href="https://github.com/zoubin/streamify-your-node-program" target="_blank" rel="external">streamify-your-node-program</a></li>
+<li><a href="https://github.com/substack/stream-handbook" target="_blank" rel="external">stream-handbook</a></li>
+</ul>
 
       
     </div>
@@ -318,17 +311,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/02/可以做-js-面试实战题吗/" rel="next" title="可以做 js 面试实战题吗">
-                <i class="fa fa-chevron-left"></i> 可以做 js 面试实战题吗
+              <a href="/2017/04/09/node-学习笔记之-Event-loop/" rel="next" title="node 学习笔记之 Event loop">
+                <i class="fa fa-chevron-left"></i> node 学习笔记之 Event loop
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/09/node-学习笔记之-Event-loop/" rel="prev" title="node 学习笔记之 Event loop">
-                node 学习笔记之 Event loop <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -354,8 +343,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/11/15/Learn-Parse-Server/"
-           data-title="Learn Parse Server" data-url="http://xiekw2010.github.io/2016/11/15/Learn-Parse-Server/">
+      <div class="ds-thread" data-thread-key="2017/04/12/node-学习笔记之-stream/"
+           data-title="node 学习笔记之 stream" data-url="http://xiekw2010.github.io/2017/04/12/node-学习笔记之-stream/">
       </div>
     
   </div>
@@ -461,7 +450,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-Parse-Server"><span class="nav-number">1.</span> <span class="nav-text">什么是 Parse Server?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么是-Parse-Server"><span class="nav-number">2.</span> <span class="nav-text">为什么是 Parse Server?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我是怎么迁移原来的-egg-服务的？"><span class="nav-number">3.</span> <span class="nav-text">我是怎么迁移原来的 egg 服务的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些-parse-SDK-的小技巧"><span class="nav-number">4.</span> <span class="nav-text">一些 parse SDK 的小技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结一下"><span class="nav-number">5.</span> <span class="nav-text">总结一下</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#stream-handbook"><span class="nav-number">1.</span> <span class="nav-text">stream handbook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么实现一个类似-gulp-的-pipe-功能"><span class="nav-number">2.</span> <span class="nav-text">怎么实现一个类似 gulp 的 pipe 功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
